@@ -53,7 +53,9 @@ body {
     overflow-x: auto;
     white-space: nowrap;
     padding-bottom: 8px;
+    flex-wrap: nowrap; /* Evita que los botones se achiquen o rompan */
 }
+
 /* Ocultar barra de scroll en tabs */
 .circles-tabs::-webkit-scrollbar { display: none; }
 
