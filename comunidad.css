@@ -225,6 +225,14 @@ body {
     z-index: 100;
     padding: 0 10px;
 }
+/* Corrección de enlaces en la barra inferior */
+.bottom-nav a.nav-btn {
+    text-decoration: none; /* Quita el subrayado */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
 
 .nav-btn {
     background: none;
