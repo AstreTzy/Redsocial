@@ -1,0 +1,112 @@
+/* ESTILOS PARA LA LISTA DE CHATS */
+
+.chat-list-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+/* Buscador en la cabecera */
+.chat-search {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-top: 5px;
+}
+.chat-search span {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+.chat-search input {
+    background: none;
+    border: none;
+    color: white;
+    width: 100%;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+/* Ítem de la lista de chat */
+.chat-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+}
+.chat-item:active {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Bordes personalizados según el tipo de chat */
+.avatar-container.community-border {
+    background: var(--neon-cyan);
+}
+
+.chat-info {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.chat-name-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.chat-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: white;
+}
+
+.chat-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.chat-last-message {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chat-last-message span {
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+/* Notificación de mensaje no leído (Vibrante) */
+.chat-item.unread {
+    background: rgba(0, 243, 255, 0.02);
+}
+.chat-item.unread .chat-name {
+    color: var(--neon-cyan);
+}
+.chat-item.unread .chat-last-message {
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+.unread-badge {
+    background: var(--neon-magenta);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4px;
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+}
