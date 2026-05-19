@@ -29,16 +29,17 @@
         </div>
 
         <div class="card-showcase-section">
-            <span class="invocador-tag">Avatar Exhibido</span>
+            <span class="invocador-tag">Avatar Destacado</span>
             
             <div class="anime-card-epic frame-neon-cyan" id="main-card">
-                <div class="epic-badge">ÉPICO</div>
+                <div class="epic-badge">USUARIO ÉPICO</div>
+                
                 <div class="card-art-wrapper">
-                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" id="foto-avatar" class="card-illustration" alt="Molly">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" id="foto-avatar" class="card-illustration" alt="Avatar">
                     
                     <div class="card-titles">
-                        <div class="card-main-title">Molly, Guardiana del Bosque Divino</div>
-                        <div class="card-sub-title">Molly, Estrella de las Arenas</div>
+                        <div class="card-main-title">Yuki</div>
+                        <div class="card-sub-title">@astretzy</div>
                     </div>
                 </div>
             </div>
@@ -87,7 +88,7 @@
     </div>
 
     <script>
-        // FUNCIÓN 1: Abre la galería, procesa la foto del teléfono y la cambia en la tarjeta
+        // Función para cambiar la imagen seleccionando cualquier archivo de tu teléfono
         function subirFoto(event) {
             const archivo = event.target.files[0];
             
@@ -95,7 +96,7 @@
                 const leerArchivo = new FileReader();
                 
                 leerArchivo.onload = function(e) {
-                    // Cambia la imagen de Molly por la foto que elegiste
+                    // Actualiza la foto de tu tarjeta en tiempo real
                     document.getElementById('foto-avatar').src = e.target.result;
                 }
                 
@@ -103,19 +104,19 @@
             }
         }
 
-        // FUNCIÓN 2: Controla el cambio de color de los marcos inferiores
+        // Función interactiva para equipar los marcos exclusivos de la tienda
         function cambiarMarco(tipo) {
             const tarjeta = document.getElementById('main-card');
             
-            // Limpiar clases de la tarjeta grande
+            // Limpiar clases antiguas de la tarjeta
             tarjeta.classList.remove('frame-default', 'frame-neon-cyan', 'frame-neon-magenta');
             
-            // Limpiar estilos activos de los botones de abajo
+            // Quitar el estado activo de los botones de la cuadrícula
             document.getElementById('btn-cyan').classList.remove('active');
             document.getElementById('btn-magenta').classList.remove('active');
             document.getElementById('btn-default').classList.remove('active');
             
-            // Resetear textos a "Usar"
+            // Resetear textos de estado
             document.getElementById('status-cyan').textContent = 'Usar';
             document.getElementById('status-cyan').className = 'frame-status status-unlocked';
             document.getElementById('status-magenta').textContent = 'Usar';
@@ -123,7 +124,7 @@
             document.getElementById('status-default').textContent = 'Usar';
             document.getElementById('status-default').className = 'frame-status status-unlocked';
 
-            // Aplicar el marco seleccionado
+            // Activar el cosmético que tocaste
             if (tipo === 'cyan') {
                 tarjeta.classList.add('frame-neon-cyan');
                 document.getElementById('btn-cyan').classList.add('active');
