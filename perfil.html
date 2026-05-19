@@ -253,10 +253,9 @@
         }
 
         function mostrarPantallaAcceso() {
-    // En lugar de mostrar el login viejo de perfil, lo mandamos al inicio bloqueado
-    window.location.href = "index.html";
-}
-
+            document.getElementById('main-profile-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            cambiarPestaña('login');
         }
 
         // Cambia el marco y lo guarda directo en los datos del usuario activo
