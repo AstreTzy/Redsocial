@@ -1,62 +1,122 @@
-<div class="profile-container">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-NET: Perfil Yuki</title>
+    
+    <link rel="stylesheet" href="perfil.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
 
-    <div class="profile-header">
-        <h1 class="profile-username">
-            Yuki <span class="neon-dot">.</span>
-            <span class="verified-badge">✔</span> 
-        </h1>
-        <button class="btn-edit-profile">Editar</button>
-    </div>
+    <div class="profile-container">
 
-    <div class="card-showcase-section">
-        <span class="invocador-tag">MARCO EQUIPADO</span>
-        <div class="anime-card-epic frame-neon-cyan" id="main-card">
-            <div class="epic-badge">ÉPICO</div>
-            <div class="card-art-wrapper">
-                <img src="Molly_Foto.jpg" class="card-illustration" alt="Molly">
-                <div class="card-titles">
-                    <div class="card-main-title">Molly, Guardiana del Bosque Divino</div>
-                    <div class="card-sub-title">Molly, Estrella de las Arenas</div>
+        <div class="profile-header">
+            <h1 class="profile-username">
+                Yuki<span class="neon-dot">.</span>
+                <span class="verified-badge" title="Identidad Verificada">
+                    <i class="fas fa-check-circle"></i>
+                </span> 
+            </h1>
+            <button class="btn-edit-profile">
+                <i class="fas fa-pen"></i> Editar
+            </button>
+        </div>
+
+        <div class="card-showcase-section">
+            <span class="invocador-tag">Avatar Exhibido</span>
+            
+            <div class="anime-card-epic frame-neon-cyan" id="main-card">
+                <div class="epic-badge">ÉPICO</div>
+                <div class="card-art-wrapper">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" class="card-illustration" alt="Molly">
+                    
+                    <div class="card-titles">
+                        <div class="card-main-title">Molly, Guardiana del Bosque Divino</div>
+                        <div class="card-sub-title">Molly, Estrella de las Arenas</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="stats-section">
-        <h2 class="section-title">Colección de <span>Marcos</span></h2>
-        <div class="frames-grid">
+        <div class="frames-section">
+            <h2 class="section-title"><i class="fas fa-palette"></i> Colección de Marcos</h2>
             
-            <div class="frame-box active" onclick="cambiarMarco('cyan')">
-                <div class="frame-preview-circle preview-cyan">O</div>
-                <div class="frame-label">Cian Neón</div>
-                <div class="frame-status status-equipped">Equipado</div>
-            </div>
+            <div class="frames-grid">
+                
+                <div class="frame-box active" id="btn-cyan" onclick="cambiarMarco('cyan')">
+                    <div class="frame-preview-circle preview-cyan"></div>
+                    <div class="frame-label">Cian Neón</div>
+                    <div class="frame-status" id="status-cyan">Equipado</div>
+                </div>
 
-            <div class="frame-box" onclick="cambiarMarco('magenta')">
-                <div class="frame-preview-circle preview-magenta">O</div>
-                <div class="frame-label">Magma Pink</div>
-                <div class="frame-status status-unlocked">Desbloqueado</div>
-            </div>
+                <div class="frame-box" id="btn-magenta" onclick="cambiarMarco('magenta')">
+                    <div class="frame-preview-circle preview-magenta"></div>
+                    <div class="frame-label">Magma Pink</div>
+                    <div class="frame-status" id="status-magenta">Usar</div>
+                </div>
 
-            <div class="frame-box" onclick="cambiarMarco('default')">
-                <div class="frame-preview-circle preview-default">O</div>
-                <div class="frame-label">Por Defecto</div>
-                <div class="frame-status status-unlocked">Desbloqueado</div>
-            </div>
+                <div class="frame-box" id="btn-default" onclick="cambiarMarco('default')">
+                    <div class="frame-preview-circle preview-default"></div>
+                    <div class="frame-label">Estándar</div>
+                    <div class="frame-status" id="status-default">Usar</div>
+                </div>
 
+            </div>
         </div>
+
+        <div class="collection-progress-section">
+            <div class="progress-meta">
+                <span>Marcos Desbloqueados</span>
+                <span>1 / 3</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <button class="btn-get-frames">
+            <i class="fas fa-gift"></i> Obtener más marcos
+        </button>
+
     </div>
 
-    <div class="collection-progress-section">
-        <div class="progress-meta">
-            <span>Marcos Obtenidos</span>
-            <span>1 / 3</span>
-        </div>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill"></div>
-        </div>
-    </div>
+    <script>
+        function cambiarMarco(tipo) {
+            const tarjeta = document.getElementById('main-card');
+            
+            tarjeta.classList.remove('frame-default', 'frame-neon-cyan', 'frame-neon-magenta');
+            
+            document.getElementById('btn-cyan').classList.remove('active');
+            document.getElementById('btn-magenta').classList.remove('active');
+            document.getElementById('btn-default').classList.remove('active');
+            
+            document.getElementById('status-cyan').textContent = 'Usar';
+            document.getElementById('status-cyan').className = 'frame-status status-unlocked';
+            document.getElementById('status-magenta').textContent = 'Usar';
+            document.getElementById('status-magenta').className = 'frame-status status-unlocked';
+            document.getElementById('status-default').textContent = 'Usar';
+            document.getElementById('status-default').className = 'frame-status status-unlocked';
 
-    <button class="btn-get-frames">Obtener más marcos</button>
-
-</div>
+            if (tipo === 'cyan') {
+                tarjeta.classList.add('frame-neon-cyan');
+                document.getElementById('btn-cyan').classList.add('active');
+                document.getElementById('status-cyan').textContent = 'Equipado';
+                document.getElementById('status-cyan').className = 'frame-status status-equipped';
+            } else if (tipo === 'magenta') {
+                tarjeta.classList.add('frame-neon-magenta');
+                document.getElementById('btn-magenta').classList.add('active');
+                document.getElementById('status-magenta').textContent = 'Equipado';
+                document.getElementById('status-magenta').className = 'frame-status status-equipped';
+            } else if (tipo === 'default') {
+                tarjeta.classList.add('frame-default');
+                document.getElementById('btn-default').classList.add('active');
+                document.getElementById('status-default').textContent = 'Equipado';
+                document.getElementById('status-default').className = 'frame-status status-equipped';
+            }
+        }
+    </script>
+</body>
+</html>
