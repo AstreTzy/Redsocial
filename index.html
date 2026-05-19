@@ -9,158 +9,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* Pantalla completa que bloquea todo el fondo, incluyendo la barra inferior */
+        /* Pantalla de Bloqueo Inicial */
         .auth-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #0a0e17;
-            z-index: 999999; /* El número más alto para tapar la barra de abajo */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #0a0e17; z-index: 999999;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
         }
-
         .auth-card {
-            background: #121824;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 30px 20px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            text-align: center;
+            background: #121824; border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 30px 20px; width: 100%; max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8); text-align: center;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-
-        .auth-logo {
-            font-size: 2.4rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            color: #fff;
-        }
-        .auth-logo span {
-            color: #00f3ff;
-            text-shadow: 0 0 8px #00f3ff;
-        }
-
-        .auth-tabs {
-            display: flex;
-            background: #0a0e17;
-            border-radius: 10px;
-            padding: 4px;
-            margin-bottom: 25px;
-        }
-
+        .auth-logo { font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 25px; color: #fff; }
+        .auth-logo span { color: #00f3ff; text-shadow: 0 0 8px #00f3ff; }
+        .auth-tabs { display: flex; background: #0a0e17; border-radius: 10px; padding: 4px; margin-bottom: 25px; }
         .auth-tab {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #62728f;
-            padding: 12px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            flex: 1; background: transparent; border: none; color: #62728f;
+            padding: 12px; font-weight: 700; font-size: 0.95rem; border-radius: 8px; cursor: pointer;
         }
-
-        .auth-tab.active {
-            background: #1c2436;
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-        }
-
-        .auth-form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            text-align: left;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-group label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #62728f;
-            letter-spacing: 0.5px;
-        }
-
+        .auth-tab.active { background: #1c2436; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+        .auth-form-container { display: flex; flex-direction: column; gap: 18px; text-align: left; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: #62728f; }
         .input-group input {
-            background: #0a0e17;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 12px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border 0.2s;
+            background: #0a0e17; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 12px; color: #fff; outline: none;
         }
-
-        .input-group input:focus {
-            border-color: #00f3ff;
-        }
-
-        /* Zona para cargar foto en el Registro */
+        .input-group input:focus { border-color: #00f3ff; }
+        
         .register-avatar-upload {
-            width: 90px;
-            height: 90px;
-            background: #0a0e17;
-            border: 2px dashed #62728f;
-            border-radius: 50%;
-            margin: 0 auto 10px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
+            width: 90px; height: 90px; background: #0a0e17; border: 2px dashed #62728f;
+            border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;
         }
-
-        .avatar-preview-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #62728f;
-            font-size: 0.65rem;
-            font-weight: 700;
-            gap: 4px;
-        }
-        .avatar-preview-placeholder i { font-size: 1.2rem; }
-
-        .register-avatar-upload img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .avatar-preview-placeholder { display: flex; flex-direction: column; align-items: center; color: #62728f; font-size: 0.65rem; gap: 4px; }
+        .register-avatar-upload img { width: 100%; height: 100%; object-fit: cover; }
         .btn-auth-submit {
-            background: linear-gradient(135deg, #ff007f, #c0005f);
-            color: #fff;
-            border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #ff007f, #c0005f); color: #fff; border: none;
+            padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+        }
+        .auth-hidden { display: none !important; }
+
+        /* ==========================================================================
+           MODAL / VENTANA FLOTANTE PARA PUBLICAR (BOTÓN +)
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 14, 23, 0.9); z-index: 99999;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-card {
+            background: #121824; border: 1px solid var(--neon-cyan);
+            border-radius: 16px; width: 100%; max-width: 450px; padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .modal-header h3 { font-size: 1.2rem; font-weight: 800; color: #fff; }
+        .btn-close-modal { background: transparent; border: none; color: #62728f; cursor: pointer; }
+        .modal-card textarea {
+            width: 100%; height: 120px; background: #0a0e17; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 12px; color: #fff; font-size: 0.95rem; resize: none; outline: none; margin-bottom: 15px;
+        }
+        .modal-card textarea:focus { border-color: #ff007f; }
+        
+        /* Subir imagen opcional al post */
+        .post-image-upload-zone {
+            background: #0a0e17; border: 1px dashed rgba(255,255,255,0.15);
+            border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; margin-bottom: 15px; color: #62728f; font-size: 0.85rem;
+        }
+        .post-image-upload-zone img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-top: 10px; }
+        
+        .btn-publish-submit {
+            width: 100%; background: linear-gradient(135deg, #00f3ff, #00a2ff); color: #0a0e17;
+            border: none; padding: 12px; border-radius: 10px; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 243, 255, 0.3);
         }
 
-        .btn-auth-submit:active { transform: scale(0.98); }
-        .auth-hidden { display: none !important; }
+        /* Estilo activo para corazones de me gusta pulsados */
+        .like-btn.liked {
+            color: #ff007f !important;
+            filter: drop-shadow(0 0 6px #ff007f);
+        }
     </style>
 </head>
 <body>
@@ -168,7 +99,6 @@
     <div class="auth-overlay auth-hidden" id="auth-gatekeeper">
         <div class="auth-card">
             <div class="auth-logo">Z<span>·</span>NET</div>
-            
             <div class="auth-tabs">
                 <button class="auth-tab active" id="tab-login" onclick="cambiarPestaña('login')">Entrar</button>
                 <button class="auth-tab" id="tab-register" onclick="cambiarPestaña('register')">Registrarse</button>
@@ -209,6 +139,31 @@
         </div>
     </div>
 
+
+    <div class="modal-overlay auth-hidden" id="modal-publish-box">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Crear Publicación</h3>
+                <button class="btn-close-modal" onclick="cerrarModalPublicar()">
+                    <span class="material-icons-round">close</span>
+                </button>
+            </div>
+            <textarea id="post-text-content" placeholder="¿Qué rol o anime tienes en mente hoy...? 🌌"></textarea>
+            
+            <div class="post-image-upload-zone" onclick="document.getElementById('post-file-image').click()">
+                <div id="post-img-placeholder">
+                    <span class="material-icons-round">add_photo_alternate</span>
+                    <p>Agregar Imagen al post (Opcional)</p>
+                </div>
+                <img id="post-preview-img" class="auth-hidden" alt="Preview post">
+            </div>
+            <input type="file" id="post-file-image" accept="image/*" style="display: none;" onchange="previsualizarFotoPost(event)">
+            
+            <button class="btn-publish-submit" onclick="guardarNuevoPostReal()">Publicar en Z-NET</button>
+        </div>
+    </div>
+
+
     <header class="anime-header">
         <div class="logo">Z<span>·</span>NET</div>
         <nav class="circles-tabs">
@@ -219,7 +174,7 @@
         </nav>
     </header>
 
-    <main class="feed-container">
+    <main class="feed-container" id="feed-dinamico">
         
         <article class="anime-card post-card">
             <div class="post-user-info">
@@ -235,18 +190,16 @@
                 </div>
                 <button class="btn-icon-more"><span class="material-icons-round">more_vert</span></button>
             </div>
-
             <div class="post-content">
                 <p>¡Busco compañeros para un rol serio ambientado en Neo-Tokio 2099! 🌌 Necesitamos un hacker y un mercenario. Requisitos: Ficha detallada y +5 líneas por acción. ¡Dejen su me gusta y les abro DM!</p>
                 <div class="post-image-wrapper">
                     <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600" alt="Post Image">
                 </div>
             </div>
-
             <div class="post-actions">
-                <button class="action-btn like-btn">
+                <button class="action-btn like-btn" onclick="interaccionLike(this)">
                     <span class="material-icons-round">favorite_border</span>
-                    <span>142</span>
+                    <span class="likes-count">142</span>
                 </button>
                 <button class="action-btn comment-btn">
                     <span class="material-icons-round">chat_bubble_outline</span>
@@ -264,35 +217,54 @@
         <a href="index.html" class="nav-btn" id="nav-home">
             <span class="material-icons-round">home</span>
         </a>
-        
         <a href="#" class="nav-btn" id="nav-explore">
             <span class="material-icons-round">explore</span>
         </a>
-        
-        <button class="nav-btn btn-add">
+        <button class="nav-btn btn-add" onclick="abrirModalPublicar()">
             <span class="material-icons-round">add</span>
         </button>
-        
         <a href="chat.html" class="nav-btn" id="nav-chat">
             <span class="material-icons-round">forum</span>
         </a>
-        
         <a href="perfil.html" class="nav-btn" id="nav-profile">
             <span class="material-icons-round">person</span>
         </a>
     </nav>
 
+
     <script>
         let fotoTemporalBase64 = "";
+        let fotoPostTemporalBase64 = "";
 
-        // Comprobación de seguridad instantánea al cargar la página de inicio
+        // BANCO DE DATOS DE LOS BOTS SIMULADOS (Fake Activity)
+        const listaDeBots = [
+            { nombre: "Kaneki_Ken", rango: "Gamer", tagColor: "#ffb74d", avatar: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=150", circulo: "#ZonaGamer" },
+            { nombre: "Rin_Toosaka", rango: "Cosplayer", tagColor: "#ff007f", avatar: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=150", circulo: "#Anime_Comunidad" },
+            { nombre: "Zero_Two_02", rango: "Rol Máster", tagColor: "#00f3ff", avatar: "https://images.unsplash.com/photo-1560942485-b2a11cc13456?w=150", circulo: "#Rol_Epic" }
+        ];
+
+        const frasesDeBots = [
+            "¿Alguien disponible para unas partidas en la noche? Pasen ID al privado 🎮🔥.",
+            "Acabo de terminar mi ficha de personaje para el rol medieval, quedó súper Op ⚔️✨.",
+            "¡Recomienden animes de esta temporada! Siento que ya me vi todos los buenos 😭🍙.",
+            "Trabajando en mi próximo traje de la convención de anime de fin de mes, deséenme suerte 🌸✂️."
+        ];
+
+        const imagenesDeBots = [
+            "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+            "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500",
+            "" // Algunos posts de bots no llevan imagen para alternar
+        ];
+
+        // CONTROL DE CARGA INICIAL Y SEGURIDAD
         window.onload = function() {
             const sesionAbierta = localStorage.getItem('znet_sesion_activa');
             if (!sesionAbierta) {
-                // Si no hay sesión, muestra el bloqueo y esconde por completo la barra
                 document.getElementById('auth-gatekeeper').classList.remove('auth-hidden');
                 document.getElementById('main-bottom-nav').style.display = 'none';
             }
+            // Iniciar el reloj de los bots automáticos para que tiren posts cada cierto tiempo
+            setInterval(generarPostDeBotAleatorio, 45000); // Lanza un bot de simulación cada 45 segundos
         }
 
         function cambiarPestaña(tipo) {
@@ -317,8 +289,7 @@
                     fotoTemporalBase64 = e.target.result;
                     document.getElementById('avatar-preview-box').classList.add('auth-hidden');
                     const img = document.getElementById('reg-avatar-img');
-                    img.src = fotoTemporalBase64;
-                    img.classList.remove('auth-hidden');
+                    img.src = fotoTemporalBase64; img.classList.remove('auth-hidden');
                 }
                 leerArchivo.readAsDataURL(archivo);
             }
@@ -327,24 +298,15 @@
         function procesarRegistro() {
             const usuario = document.getElementById('reg-user').value.trim();
             const contrasena = document.getElementById('reg-pass').value.trim();
-            
-            if (!usuario || !contrasena) {
-                alert("Por favor, rellena los datos de tu nueva cuenta.");
-                return;
+            if (!usuario || !contrasena || !fotoTemporalBase64) {
+                alert("Completa todos los campos y sube tu avatar exclusivo."); return;
             }
-            if (!fotoTemporalBase64) {
-                alert("Sube una foto para tu avatar exclusivo.");
-                return;
-            }
-
-            // Almacenar los datos en la memoria del dispositivo actual
             localStorage.setItem(`znet_user_${usuario.toLowerCase()}`, usuario);
             localStorage.setItem(`znet_pass_${usuario.toLowerCase()}`, contrasena);
             localStorage.setItem(`znet_pic_${usuario.toLowerCase()}`, fotoTemporalBase64);
             localStorage.setItem(`znet_frame_${usuario.toLowerCase()}`, 'cyan');
-
-            // Iniciar sesión, quitar bloqueo y restaurar la barra inferior
             localStorage.setItem('znet_sesion_activa', usuario.toLowerCase());
+            
             document.getElementById('auth-gatekeeper').classList.add('auth-hidden');
             document.getElementById('main-bottom-nav').style.display = 'flex';
         }
@@ -352,18 +314,123 @@
         function procesarLogin() {
             const usuario = document.getElementById('login-user').value.trim().toLowerCase();
             const contrasena = document.getElementById('login-pass').value.trim();
-
-            const cuentaExiste = localStorage.getItem(`znet_user_${usuario}`);
-            const passwordCorrecto = localStorage.getItem(`znet_pass_${usuario}`);
-
-            if (cuentaExiste && passwordCorrecto === contrasena) {
+            if (localStorage.getItem(`znet_user_${usuario}`) && localStorage.getItem(`znet_pass_${usuario}`) === contrasena) {
                 localStorage.setItem('znet_sesion_activa', usuario);
-                // Quitar bloqueo y restaurar la barra inferior
                 document.getElementById('auth-gatekeeper').classList.add('auth-hidden');
                 document.getElementById('main-bottom-nav').style.display = 'flex';
             } else {
-                alert("Datos incorrectos. Si no tienes una cuenta, pulsa en 'Registrarse'.");
+                alert("Datos incorrectos. Si eres nuevo, ve a la pestaña de 'Registrarse'.");
             }
+        }
+
+        // INTERACCIÓN DE ME GUSTA INTERACTIVOS (+1 / -1)
+        function interaccionLike(boton) {
+            const contador = boton.querySelector('.likes-count');
+            let cantidadActual = parseInt(contador.textContent);
+            
+            if (boton.classList.contains('liked')) {
+                boton.classList.remove('liked');
+                boton.querySelector('.material-icons-round').textContent = 'favorite_border';
+                contador.textContent = cantidadActual - 1;
+            } else {
+                boton.classList.add('liked');
+                boton.querySelector('.material-icons-round').textContent = 'favorite';
+                contador.textContent = cantidadActual + 1;
+            }
+        }
+
+        // MANEJO DE PUBLICACIÓN REAL CON TU CUENTA (BOTÓN +)
+        function abrirModalPublicar() { document.getElementById('modal-publish-box').classList.remove('auth-hidden'); }
+        function cerrarModalPublicar() {
+            document.getElementById('modal-publish-box').classList.add('auth-hidden');
+            document.getElementById('post-text-content').value = "";
+            document.getElementById('post-preview-img').classList.add('auth-hidden');
+            document.getElementById('post-img-placeholder').classList.remove('auth-hidden');
+            fotoPostTemporalBase64 = "";
+        }
+
+        function previsualizarFotoPost(event) {
+            const archivo = event.target.files[0];
+            if (archivo) {
+                const leer = new FileReader();
+                leer.onload = function(e) {
+                    fotoPostTemporalBase64 = e.target.result;
+                    document.getElementById('post-img-placeholder').classList.add('auth-hidden');
+                    const img = document.getElementById('post-preview-img');
+                    img.src = fotoPostTemporalBase64; img.classList.remove('auth-hidden');
+                }
+                leer.readAsDataURL(archivo);
+            }
+        }
+
+        function guardarNuevoPostReal() {
+            const texto = document.getElementById('post-text-content').value.trim();
+            if (!texto) { alert("¡Escribe un mensaje antes de publicar!"); return; }
+            
+            const usuarioActivo = localStorage.getItem('znet_sesion_activa');
+            const nombreMostrar = localStorage.getItem(`znet_user_${usuarioActivo}`) || "Usuario";
+            const fotoMostrar = localStorage.getItem(`znet_pic_${usuarioActivo}`) || "https://i.pravatar.cc/100";
+
+            // Crear el bloque HTML del post real
+            crearEstructuraPostCard(nombreMostrar, "Miembro Elite", "#ff007f", fotoMostrar, texto, fotoPostTemporalBase64, "#Mi_Perfil", "Ahora mismo");
+            cerrarModalPublicar();
+        }
+
+        // SIMULADOR DE BOTS DE "GENTE REAL" AUTOMÁTICOS
+        function generarPostDeBotAleatorio() {
+            // Elige un bot, una frase y una imagen al azar
+            const bot = listaDeBots[Math.floor(Math.random() * listaDeBots.length)];
+            const frase = frasesDeBots[Math.floor(Math.random() * frasesDeBots.length)];
+            const imagen = imagenesDeBots[Math.floor(Math.random() * imagenesDeBots.length)];
+            
+            crearEstructuraPostCard(bot.nombre, bot.rango, bot.tagColor, bot.avatar, frase, imagen, bot.circulo, "Hace un momento");
+        }
+
+        // FUNCIÓN MAESTRA QUE PINTA LAS TARJETAS EN EL FEED DINÁMICO
+        function crearEstructuraPostCard(nombre, rango, colorTag, avatar, texto, imagen, circulo, tiempo) {
+            const feed = document.getElementById('feed-dinamico');
+            const articulo = document.createElement('article');
+            articulo.className = "anime-card post-card";
+
+            let bloqueImagen = "";
+            if (imagen) {
+                bloqueImagen = `<div class="post-image-wrapper"><img src="${imagen}" alt="Post image"></div>`;
+            }
+
+            articulo.innerHTML = `
+                <div class="post-user-info">
+                    <div class="avatar-container elite-border" style="border-color: ${colorTag}">
+                        <img src="${avatar}" alt="Avatar">
+                    </div>
+                    <div class="user-meta">
+                        <div class="username-wrapper">
+                            <span class="user-name">${nombre}</span>
+                            <span class="badge-tag roleplay" style="color: ${colorTag}; border-color: rgba(255,255,255,0.1); background: #151b26;">${rango}</span>
+                        </div>
+                        <span class="post-time">${tiempo} en <span class="circle-name">${circulo}</span></span>
+                    </div>
+                    <button class="btn-icon-more"><span class="material-icons-round">more_vert</span></button>
+                </div>
+                <div class="post-content">
+                    <p>${texto}</p>
+                    ${bloqueImagen}
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" onclick="interaccionLike(this)">
+                        <span class="material-icons-round">favorite_border</span>
+                        <span class="likes-count">${Math.floor(Math.random() * 15) + 1}</span>
+                    </button>
+                    <button class="action-btn comment-btn">
+                        <span class="material-icons-round">chat_bubble_outline</span>
+                        <span>${Math.floor(Math.random() * 5)}</span>
+                    </button>
+                    <button class="action-btn share-btn">
+                        <span class="material-icons-round">share</span>
+                    </button>
+                </div>
+            `;
+            // Añade la nueva tarjeta al principio del feed (arriba del todo)
+            feed.insertBefore(articulo, feed.firstChild);
         }
     </script>
 </body>
