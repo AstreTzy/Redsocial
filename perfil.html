@@ -1,97 +1,62 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - Z-Anime</title>
-    <link rel="stylesheet" href="comunidad.css"> <link rel="stylesheet" href="perfil.css">    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-</head>
-<body>
+<div class="profile-container">
 
-    <main class="profile-container">
-        <section class="profile-header">
-            <h1 class="profile-username">Yuki <span class="neon-dot">.</span></h1>
-            <button class="btn-edit-profile">
-                <span class="material-icons-round">edit</span> Editar
-            </button>
-        </section>
+    <div class="profile-header">
+        <h1 class="profile-username">
+            Yuki <span class="neon-dot">.</span>
+            <span class="verified-badge">✔</span> 
+        </h1>
+        <button class="btn-edit-profile">Editar</button>
+    </div>
 
-        <section class="card-showcase-section">
-            <div class="invocador-tag">INVOCADOR</div>
-            <div class="anime-card-epic">
-                <div class="card-glow-effect"></div>
-                <div class="epic-badge">ÉPICO</div>
-                
-                <div class="card-art-wrapper">
-                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400" alt="Molly Art" class="card-illustration">
-                    <div class="card-titles">
-                        <h2 class="card-main-title">Molly, Guardiana del Bosque Divino</h2>
-                        <h3 class="card-sub-title">Molly, Estrella de las Arenas</h3>
-                    </div>
+    <div class="card-showcase-section">
+        <span class="invocador-tag">MARCO EQUIPADO</span>
+        <div class="anime-card-epic frame-neon-cyan" id="main-card">
+            <div class="epic-badge">ÉPICO</div>
+            <div class="card-art-wrapper">
+                <img src="Molly_Foto.jpg" class="card-illustration" alt="Molly">
+                <div class="card-titles">
+                    <div class="card-main-title">Molly, Guardiana del Bosque Divino</div>
+                    <div class="card-sub-title">Molly, Estrella de las Arenas</div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section class="stats-section">
-            <h3 class="section-title"><span class="material-icons-round">bolt</span> Mis Estadísticas RPG:</h3>
+    <div class="stats-section">
+        <h2 class="section-title">Colección de <span>Marcos</span></h2>
+        <div class="frames-grid">
             
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span class="material-icons-round icon-rango">workspace_premium</span>
-                    <span class="stat-label">Rango Cuenta</span>
-                    <span class="stat-value neon-cyan-text">45</span>
-                </div>
-                <div class="stat-box">
-                    <span class="material-icons-round icon-coleccion">auto_stories</span>
-                    <span class="stat-label">Colección Única</span>
-                    <span class="stat-value neon-magenta-text">1 / 12</span>
-                </div>
-                <div class="stat-box">
-                    <span class="material-icons-round icon-alma">local_fire_department</span>
-                    <span class="stat-label">Puntos de Alma</span>
-                    <span class="stat-value neon-gold-text">3861</span>
-                </div>
+            <div class="frame-box active" onclick="cambiarMarco('cyan')">
+                <div class="frame-preview-circle preview-cyan">O</div>
+                <div class="frame-label">Cian Neón</div>
+                <div class="frame-status status-equipped">Equipado</div>
             </div>
-        </section>
 
-        <section class="album-section">
-            <div class="album-meta">
-                <span>Completado del Álbum</span>
-                <span class="neon-cyan-text">8.33 %</span>
+            <div class="frame-box" onclick="cambiarMarco('magenta')">
+                <div class="frame-preview-circle preview-magenta">O</div>
+                <div class="frame-label">Magma Pink</div>
+                <div class="frame-status status-unlocked">Desbloqueado</div>
             </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width: 8.33%;"></div>
+
+            <div class="frame-box" onclick="cambiarMarco('default')">
+                <div class="frame-preview-circle preview-default">O</div>
+                <div class="frame-label">Por Defecto</div>
+                <div class="frame-status status-unlocked">Desbloqueado</div>
             </div>
-        </section>
 
-        <section class="action-section">
-            <button class="btn-dungeon-rpg">
-                <span class="material-icons-round">crossed_swords</span> Entrar a Mazmorra (+PA)
-            </button>
-        </section>
-    </main>
-ñ    <nav class="bottom-nav">
-        <a href="index.html" class="nav-btn" id="nav-home">
-            <span class="material-icons-round">home</span>
-        </a>
-        
-        <a href="#" class="nav-btn" id="nav-explore">
-            <span class="material-icons-round">explore</span>
-        </a>
-        
-        <button class="nav-btn btn-add">
-            <span class="material-icons-round">add</span>
-        </button>
-        
-        <a href="chat.html" class="nav-btn" id="nav-chat">
-            <span class="material-icons-round">forum</span>
-        </a>
-        
-        <a href="perfil.html" class="nav-btn" id="nav-profile">
-            <span class="material-icons-round">person</span>
-        </a>
-    </nav>
+        </div>
+    </div>
 
+    <div class="collection-progress-section">
+        <div class="progress-meta">
+            <span>Marcos Obtenidos</span>
+            <span>1 / 3</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill"></div>
+        </div>
+    </div>
 
-</body>
-</html>
+    <button class="btn-get-frames">Obtener más marcos</button>
+
+</div>
