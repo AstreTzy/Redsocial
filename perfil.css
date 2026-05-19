@@ -1,4 +1,6 @@
-/* ESTILOS ESPECÍFICOS DEL PERFIL ANIME */
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS DEL PERFIL: IDENTIDAD, VERIFICACIÓN Y MARCOS
+   ========================================================================== */
 
 .profile-container {
     max-width: 500px;
@@ -6,7 +8,7 @@
     padding: 20px 15px;
 }
 
-/* Cabecera del Perfil */
+/* --- Cabecera del Perfil + Verificado --- */
 .profile-header {
     display: flex;
     justify-content: space-between;
@@ -15,11 +17,29 @@
 }
 
 .profile-username {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 1.8rem;
     font-weight: 900;
     letter-spacing: 1px;
 }
 .neon-dot { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+
+/* Icono de Verificado Estilo Cyberpunk */
+.verified-badge {
+    color: var(--neon-cyan);
+    font-size: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    filter: drop-shadow(0 0 6px var(--neon-cyan));
+    animation: verifiedPulse 3s infinite alternate;
+}
+
+@keyframes verifiedPulse {
+    0% { filter: drop-shadow(0 0 4px var(--neon-cyan)); opacity: 0.8; }
+    100% { filter: drop-shadow(0 0 10px var(--neon-cyan)); opacity: 1; }
+}
 
 .btn-edit-profile {
     background: var(--bg-card-light);
@@ -34,7 +54,7 @@
     cursor: pointer;
 }
 
-/* CARTA ÉPICA CON GLOW DINÁMICO */
+/* --- Vista de la Tarjeta con Marcos Dinámicos --- */
 .card-showcase-section {
     display: flex;
     flex-direction: column;
@@ -48,24 +68,41 @@
     color: var(--text-muted);
     margin-bottom: 10px;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
+/* Contenedor de la carta */
 .anime-card-epic {
     position: relative;
     width: 260px;
     height: 370px;
     background: #111;
     border-radius: 16px;
-    overflow: hidden;
     padding: 6px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-    /* Animación de respiración neón */
-    animation: neonGlow 4s infinite alternate;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes neonGlow {
-    0% { box-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.2); }
-    100% { box-shadow: 0 0 30px rgba(0, 243, 255, 0.6), inset 0 0 20px rgba(0, 243, 255, 0.4); }
+/* CLASES DE MARCOS SELECCIONABLES (Se aplican con JavaScript) */
+.frame-default {
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+.frame-neon-cyan {
+    border: 3px solid var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.5), inset 0 0 10px rgba(0, 243, 255, 0.3);
+}
+
+.frame-neon-magenta {
+    border: 3px solid var(--neon-magenta);
+    box-shadow: 0 0 20px rgba(255, 0, 127, 0.5), inset 0 0 10px rgba(255, 0, 127, 0.3);
+}
+
+.frame-legendary-gold {
+    border: 3px solid var(--neon-gold);
+    box-shadow: 0 0 25px rgba(255, 183, 77, 0.6), inset 0 0 12px rgba(255, 183, 77, 0.4);
+    background: linear-gradient(#111, #111) padding-box, 
+                linear-gradient(135deg, var(--neon-gold), #fff, var(--neon-magenta)) border-box;
 }
 
 .epic-badge {
@@ -110,8 +147,12 @@
 .card-main-title { font-size: 0.85rem; color: #fff; font-weight: 700; margin-bottom: 4px;}
 .card-sub-title { font-size: 0.75rem; color: var(--neon-cyan); font-weight: 500;}
 
-/* SECCIÓN MÓDULOS DE ESTADÍSTICAS */
-.stats-section { margin-bottom: 25px; }
+
+/* --- NUEVA SECCIÓN: COLECCIÓN DE MARCOS --- */
+.frames-section { 
+    margin-bottom: 25px; 
+}
+
 .section-title {
     font-size: 1rem;
     color: var(--text-main);
@@ -119,55 +160,79 @@
     align-items: center;
     gap: 6px;
     margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
-.section-title span { color: var(--neon-gold); }
+.section-title span { color: var(--neon-cyan); }
 
-.stats-grid {
+/* Reutilizamos tu Grid para mostrar los marcos equipables */
+.frames-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 12px;
 }
 
-.stat-box {
+.frame-box {
     background: var(--bg-card);
-    border: 1px solid rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
     border-radius: 12px;
-    padding: 15px 10px;
+    padding: 12px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.stat-box span.material-icons-round { font-size: 1.6rem; margin-bottom: 8px; }
-.icon-rango { color: var(--neon-cyan); }
-.icon-coleccion { color: var(--neon-magenta); }
-.icon-alma { color: var(--neon-gold); }
-
-.stat-label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 6px;
+/* Efecto cuando pasas el dedo o seleccionas */
+.frame-box:active, .frame-box.active {
+    transform: scale(0.95);
+    background: var(--bg-card-light);
+    border-color: var(--neon-cyan);
 }
 
-.stat-value { font-size: 1.15rem; font-weight: 800; }
+/* Vista previa en miniatura de los marcos dentro de la tienda/inventario */
+.frame-preview-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
 
-/* Colores de Texto Neón Vivos */
-.neon-cyan-text { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0,243,255,0.3); }
-.neon-magenta-text { color: var(--neon-magenta); text-shadow: 0 0 10px rgba(255,0,127,0.3); }
-.neon-gold-text { color: var(--neon-gold); text-shadow: 0 0 10px rgba(255,183,77,0.3); }
+.preview-default { border: 2px solid rgba(255,255,255,0.2); color: #666; }
+.preview-cyan { border: 3px solid var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); color: var(--neon-cyan); }
+.preview-magenta { border: 3px solid var(--neon-magenta); box-shadow: 0 0 10px var(--neon-magenta); color: var(--neon-magenta); }
 
-/* BARRA DE PROGRESO */
-.album-section {
+.frame-label {
+    font-size: 0.72rem;
+    color: var(--text-main);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.frame-status { 
+    font-size: 0.65rem; 
+    font-weight: 600; 
+}
+.status-equipped { color: var(--neon-cyan); }
+.status-unlocked { color: var(--text-muted); }
+
+/* --- BARRA DE PROGRESO DE COLECCIÓN DE MARCOS --- */
+.collection-progress-section {
     background: var(--bg-card);
     padding: 15px;
     border-radius: 12px;
     margin-bottom: 30px;
 }
-.album-meta {
+
+.progress-meta {
     display: flex;
     justify-content: space-between;
     font-size: 0.85rem;
@@ -182,20 +247,22 @@
     border-radius: 10px;
     overflow: hidden;
 }
+
 .progress-bar-fill {
     height: 100%;
+    width: 33%; /* Ajustable dinámicamente */
     background: linear-gradient(90deg, var(--neon-magenta), var(--neon-cyan));
     box-shadow: 0 0 8px var(--neon-cyan);
     border-radius: 10px;
 }
 
-/* BOTÓN MAZMORRA ESTILO VÍDEOJUEGO RPG */
-.btn-dungeon-rpg {
+/* --- BOTÓN ACTION: COMPRAR O CONSEGUIR MARCOS EXCLUSIVOS --- */
+.btn-get-frames {
     width: 100%;
     background: linear-gradient(135deg, #1b2030, #131722);
-    border: 2px solid var(--neon-gold);
-    color: var(--neon-gold);
-    font-size: 1rem;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-size: 0.9rem;
     font-weight: 800;
     padding: 14px;
     border-radius: 8px;
@@ -204,15 +271,15 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(255, 183, 77, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15);
     transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.btn-dungeon-rpg:active {
+.btn-get-frames:active {
     transform: scale(0.98);
-    background: var(--neon-gold);
+    background: var(--neon-cyan);
     color: #000;
-    box-shadow: 0 0 20px var(--neon-gold);
+    box-shadow: 0 0 20px var(--neon-cyan);
 }
