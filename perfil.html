@@ -20,9 +20,12 @@
                     <i class="fas fa-check-circle"></i>
                 </span> 
             </h1>
-            <button class="btn-edit-profile">
+            
+            <button class="btn-edit-profile" onclick="document.getElementById('selector-foto').click()">
                 <i class="fas fa-pen"></i> Editar
             </button>
+            
+            <input type="file" id="selector-foto" accept="image/*" style="display: none;" onchange="subirFoto(event)">
         </div>
 
         <div class="card-showcase-section">
@@ -31,7 +34,7 @@
             <div class="anime-card-epic frame-neon-cyan" id="main-card">
                 <div class="epic-badge">ÉPICO</div>
                 <div class="card-art-wrapper">
-                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" class="card-illustration" alt="Molly">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" id="foto-avatar" class="card-illustration" alt="Molly">
                     
                     <div class="card-titles">
                         <div class="card-main-title">Molly, Guardiana del Bosque Divino</div>
@@ -84,15 +87,35 @@
     </div>
 
     <script>
+        // FUNCIÓN 1: Abre la galería, procesa la foto del teléfono y la cambia en la tarjeta
+        function subirFoto(event) {
+            const archivo = event.target.files[0];
+            
+            if (archivo) {
+                const leerArchivo = new FileReader();
+                
+                leerArchivo.onload = function(e) {
+                    // Cambia la imagen de Molly por la foto que elegiste
+                    document.getElementById('foto-avatar').src = e.target.result;
+                }
+                
+                leerArchivo.readAsDataURL(archivo);
+            }
+        }
+
+        // FUNCIÓN 2: Controla el cambio de color de los marcos inferiores
         function cambiarMarco(tipo) {
             const tarjeta = document.getElementById('main-card');
             
+            // Limpiar clases de la tarjeta grande
             tarjeta.classList.remove('frame-default', 'frame-neon-cyan', 'frame-neon-magenta');
             
+            // Limpiar estilos activos de los botones de abajo
             document.getElementById('btn-cyan').classList.remove('active');
             document.getElementById('btn-magenta').classList.remove('active');
             document.getElementById('btn-default').classList.remove('active');
             
+            // Resetear textos a "Usar"
             document.getElementById('status-cyan').textContent = 'Usar';
             document.getElementById('status-cyan').className = 'frame-status status-unlocked';
             document.getElementById('status-magenta').textContent = 'Usar';
@@ -100,6 +123,7 @@
             document.getElementById('status-default').textContent = 'Usar';
             document.getElementById('status-default').className = 'frame-status status-unlocked';
 
+            // Aplicar el marco seleccionado
             if (tipo === 'cyan') {
                 tarjeta.classList.add('frame-neon-cyan');
                 document.getElementById('btn-cyan').classList.add('active');
