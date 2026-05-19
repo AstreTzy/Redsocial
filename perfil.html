@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-NET: Perfil Yuki</title>
+    <title>Z-NET: Autenticación y Perfil</title>
     
     <link rel="stylesheet" href="perfil.css">
     
@@ -13,122 +13,255 @@
 
     <div class="profile-container">
 
-        <div class="profile-header">
-            <h1 class="profile-username">
-                Yuki<span class="neon-dot">.</span>
-                <span class="verified-badge" title="Identidad Verificada">
-                    <i class="fas fa-check-circle"></i>
-                </span> 
-            </h1>
+        <div class="auth-card" id="auth-screen">
+            <div class="auth-logo">Z·NET<span class="neon-dot">.</span></div>
             
-            <button class="btn-edit-profile" onclick="document.getElementById('selector-foto').click()">
-                <i class="fas fa-pen"></i> Editar
-            </button>
-            
-            <input type="file" id="selector-foto" accept="image/*" style="display: none;" onchange="subirFoto(event)">
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="cambiarPestaña('login')">Entrar</button>
+                <button class="auth-tab" id="tab-register" onclick="cambiarPestaña('register')">Registrarse</button>
+            </div>
+
+            <div id="form-login" class="auth-form-container">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="login-user" placeholder="Tu nombre de usuario">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                </div>
+                <button class="btn-auth-submit" onclick="procesarLogin()">Iniciar Sesión</button>
+            </div>
+
+            <div id="form-register" class="auth-form-container hidden">
+                <div class="register-avatar-upload" onclick="document.getElementById('reg-selector-foto').click()">
+                    <div class="avatar-preview-placeholder" id="avatar-preview-box">
+                        <i class="fas fa-camera"></i>
+                        <span>Subir Foto</span>
+                    </div>
+                    <img id="reg-avatar-img" class="hidden" alt="Vista previa">
+                </div>
+                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFotoRegistro(event)">
+
+                <div class="input-group">
+                    <label><i class="fas fa-user-plus"></i> Crear Usuario</label>
+                    <input type="text" id="reg-user" placeholder="Ej: Yuki">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Crear Contraseña</label>
+                    <input type="password" id="reg-pass" placeholder="Contraseña segura">
+                </div>
+                <button class="btn-auth-submit" onclick="procesarRegistro()">Crear Cuenta y Entrar</button>
+            </div>
         </div>
 
-        <div class="card-showcase-section">
-            <span class="invocador-tag">Avatar Destacado</span>
+
+        <div id="main-profile-screen" class="hidden">
             
-            <div class="anime-card-epic frame-neon-cyan" id="main-card">
-                <div class="account-rank-minimal">
-                    <i class="fas fa-crown rank-icon"></i>
-                    <span class="rank-name">Elite</span>
-                </div>
+            <div class="profile-header">
+                <h1 class="profile-username">
+                    <span id="display-header-username">Usuario</span><span class="neon-dot">.</span>
+                    <span class="verified-badge" title="Identidad Verificada">
+                        <i class="fas fa-check-circle"></i>
+                    </span> 
+                </h1>
                 
-                <div class="card-art-wrapper">
-                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" id="foto-avatar" class="card-illustration" alt="Avatar">
+                <button class="btn-logout" onclick="cerrarSesion()">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+
+            <div class="card-showcase-section">
+                <span class="invocador-tag">Avatar Destacado</span>
+                
+                <div class="anime-card-epic frame-neon-cyan" id="main-card">
+                    <div class="account-rank-minimal">
+                        <i class="fas fa-crown rank-icon"></i>
+                        <span class="rank-name">Elite</span>
+                    </div>
                     
-                    <div class="card-titles">
-                        <div class="card-main-title">Yuki</div>
-                        <div class="card-sub-title">@astretzy</div>
+                    <div class="card-art-wrapper">
+                        <img src="" id="foto-avatar" class="card-illustration" alt="Avatar">
+                        
+                        <div class="card-titles">
+                            <div class="card-main-title" id="display-card-username">Nombre</div>
+                            <div class="card-sub-title" id="display-card-tag">@tag</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="frames-section">
-            <h2 class="section-title"><i class="fas fa-palette"></i> Colección de Marcos</h2>
-            
-            <div class="frames-grid">
+            <div class="frames-section">
+                <h2 class="section-title"><i class="fas fa-palette"></i> Colección de Marcos</h2>
                 
-                <div class="frame-box active" id="btn-cyan" onclick="cambiarMarco('cyan')">
-                    <div class="frame-preview-circle preview-cyan"></div>
-                    <div class="frame-label">Cian Neón</div>
-                    <div class="frame-status" id="status-cyan">Equipado</div>
-                </div>
+                <div class="frames-grid">
+                    <div class="frame-box active" id="btn-cyan" onclick="cambiarMarco('cyan')">
+                        <div class="frame-preview-circle preview-cyan"></div>
+                        <div class="frame-label">Cian Neón</div>
+                        <div class="frame-status" id="status-cyan">Equipado</div>
+                    </div>
 
-                <div class="frame-box" id="btn-magenta" onclick="cambiarMarco('magenta')">
-                    <div class="frame-preview-circle preview-magenta"></div>
-                    <div class="frame-label">Magma Pink</div>
-                    <div class="frame-status" id="status-magenta">Usar</div>
-                </div>
+                    <div class="frame-box" id="btn-magenta" onclick="cambiarMarco('magenta')">
+                        <div class="frame-preview-circle preview-magenta"></div>
+                        <div class="frame-label">Magma Pink</div>
+                        <div class="frame-status" id="status-magenta">Usar</div>
+                    </div>
 
-                <div class="frame-box" id="btn-default" onclick="cambiarMarco('default')">
-                    <div class="frame-preview-circle preview-default"></div>
-                    <div class="frame-label">Estándar</div>
-                    <div class="frame-status" id="status-default">Usar</div>
+                    <div class="frame-box" id="btn-default" onclick="cambiarMarco('default')">
+                        <div class="frame-preview-circle preview-default"></div>
+                        <div class="frame-label">Estándar</div>
+                        <div class="frame-status" id="status-default">Usar</div>
+                    </div>
                 </div>
-
             </div>
+
+            <div class="collection-progress-section">
+                <div class="progress-meta">
+                    <span>Marcos Desbloqueados</span>
+                    <span>1 / 3</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <button class="btn-get-frames">
+                <i class="fas fa-gift"></i> Obtener más marcos
+            </button>
+
         </div>
-
-        <div class="collection-progress-section">
-            <div class="progress-meta">
-                <span>Marcos Desbloqueados</span>
-                <span>1 / 3</span>
-            </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill"></div>
-            </div>
-        </div>
-
-        <button class="btn-get-frames">
-            <i class="fas fa-gift"></i> Obtener más marcos
-        </button>
-
     </div>
 
     <script>
-        // Al cargar la página, revisa si el usuario ya tenía una foto guardada en su teléfono
+        let fotoTemporalBase64 = "";
+
+        // Al cargar la página, comprueba si hay un usuario activo con sesión abierta
         window.onload = function() {
-            const fotoGuardada = localStorage.getItem('fotoPerfilZNet');
-            if (fotoGuardada) {
-                document.getElementById('foto-avatar').src = fotoGuardada;
-            }
-            
-            // También recuerda el último marco que dejaste equipado
-            const marcoGuardado = localStorage.getItem('marcoPerfilZNet');
-            if (marcoGuardado) {
-                cambiarMarco(marcoGuardado);
+            const usuarioActivo = localStorage.getItem('znet_sesion_activa');
+            if (usuarioActivo) {
+                cargarPerfilUsuario(usuarioActivo);
+            } else {
+                mostrarPantallaAcceso();
             }
         }
 
-        // Procesa la foto subida y la mete a la memoria interna del navegador
-        function subirFoto(event) {
+        // Control de pestañas del login
+        function cambiarPestaña(tipo) {
+            if (tipo === 'login') {
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('tab-register').classList.remove('active');
+                document.getElementById('form-login').classList.remove('hidden');
+                document.getElementById('form-register').classList.add('hidden');
+            } else {
+                document.getElementById('tab-register').classList.add('active');
+                document.getElementById('tab-login').classList.remove('active');
+                document.getElementById('form-register').classList.remove('hidden');
+                document.getElementById('form-login').classList.add('hidden');
+            }
+        }
+
+        // Lee la foto que subes en el registro y la guarda en una variable
+        function previsualizarFotoRegistro(event) {
             const archivo = event.target.files[0];
-            
             if (archivo) {
                 const leerArchivo = new FileReader();
-                
                 leerArchivo.onload = function(e) {
-                    const imagenBase64 = e.target.result;
-                    
-                    // 1. La pinta en la pantalla al instante
-                    document.getElementById('foto-avatar').src = imagenBase64;
-                    
-                    // 2. La guarda en el almacenamiento local del teléfono
-                    localStorage.setItem('fotoPerfilZNet', imagenBase64);
+                    fotoTemporalBase64 = e.target.result;
+                    document.getElementById('avatar-preview-box').classList.add('hidden');
+                    const img = document.getElementById('reg-avatar-img');
+                    img.src = fotoTemporalBase64;
+                    img.classList.remove('hidden');
                 }
-                
                 leerArchivo.readAsDataURL(archivo);
             }
         }
 
-        // Cambia los estilos del marco y guarda la elección
-        function cambiarMarco(tipo) {
+        // Guarda los nuevos datos de cuenta en la memoria del celular
+        function procesarRegistro() {
+            const usuario = document.getElementById('reg-user').value.trim();
+            const contrasena = document.getElementById('reg-pass').value.trim();
+            
+            if (!usuario || !contrasena) {
+                alert("Por favor, llena todos los campos de texto.");
+                return;
+            }
+            if (!fotoTemporalBase64) {
+                alert("¡No olvides subir tu foto de perfil exclusiva!");
+                return;
+            }
+
+            // Guardar base de datos simulada del usuario en su LocalStorage
+            localStorage.setItem(`znet_user_${usuario.toLowerCase()}`, usuario);
+            localStorage.setItem(`znet_pass_${usuario.toLowerCase()}`, contrasena);
+            localStorage.setItem(`znet_pic_${usuario.toLowerCase()}`, fotoTemporalBase64);
+            localStorage.setItem(`znet_frame_${usuario.toLowerCase()}`, 'cyan'); // Marco por defecto
+
+            // Iniciar sesión directo con la cuenta nueva
+            localStorage.setItem('znet_sesion_activa', usuario.toLowerCase());
+            cargarPerfilUsuario(usuario.toLowerCase());
+        }
+
+        // Comprueba los datos de acceso guardados
+        function procesarLogin() {
+            const usuario = document.getElementById('login-user').value.trim().toLowerCase();
+            const contrasena = document.getElementById('login-pass').value.trim();
+
+            const registroExiste = localStorage.getItem(`znet_user_${usuario}`);
+            const contrasenaCorrecta = localStorage.getItem(`znet_pass_${usuario}`);
+
+            if (registroExiste && contrasenaCorrecta === contrasena) {
+                localStorage.setItem('znet_sesion_activa', usuario);
+                cargarPerfilUsuario(usuario);
+            } else {
+                alert("Usuario o contraseña incorrectos. Si eres nuevo, ve a 'Registrarse'.");
+            }
+        }
+
+        // Pinta los datos del usuario conectado en la tarjeta
+        function cargarPerfilUsuario(userKey) {
+            const nombreReal = localStorage.getItem(`znet_user_${userKey}`);
+            const fotoPerfil = localStorage.getItem(`znet_pic_${userKey}`);
+            const marcoActual = localStorage.getItem(`znet_frame_${userKey}`) || 'cyan';
+
+            document.getElementById('display-header-username').textContent = nombreReal;
+            document.getElementById('display-card-username').textContent = nombreReal;
+            document.getElementById('display-card-tag').textContent = `@${userKey}`;
+            document.getElementById('foto-avatar').src = fotoPerfil;
+
+            // Cargar el marco guardado del usuario
+            cambiarMarco(marcoActual, false);
+
+            // Cambiar pantallas de forma limpia
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('main-profile-screen').classList.remove('hidden');
+        }
+
+        // Borra el usuario activo y expulsa a la pantalla de entrada
+        function cerrarSesion() {
+            localStorage.removeItem('znet_sesion_activa');
+            
+            // Resetear inputs de texto
+            document.getElementById('login-user').value = "";
+            document.getElementById('login-pass').value = "";
+            document.getElementById('reg-user').value = "";
+            document.getElementById('reg-pass').value = "";
+            document.getElementById('reg-avatar-img').classList.add('hidden');
+            document.getElementById('avatar-preview-box').classList.remove('hidden');
+            fotoTemporalBase64 = "";
+
+            mostrarPantallaAcceso();
+        }
+
+        function mostrarPantallaAcceso() {
+            document.getElementById('main-profile-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            cambiarPestaña('login');
+        }
+
+        // Cambia el marco y lo guarda directo en los datos del usuario activo
+        function cambiarMarco(tipo, guardar = true) {
             const tarjeta = document.getElementById('main-card');
+            const userKey = localStorage.getItem('znet_sesion_activa');
             
             tarjeta.classList.remove('frame-default', 'frame-neon-cyan', 'frame-neon-magenta');
             document.getElementById('btn-cyan').classList.remove('active');
@@ -159,8 +292,10 @@
                 document.getElementById('status-default').className = 'frame-status status-equipped';
             }
             
-            // Guarda tu marco seleccionado en la memoria local
-            localStorage.setItem('marcoPerfilZNet', tipo);
+            // Guarda la selección en los datos individuales de este usuario
+            if (guardar && userKey) {
+                localStorage.setItem(`znet_frame_${userKey}`, tipo);
+            }
         }
     </script>
 </body>
