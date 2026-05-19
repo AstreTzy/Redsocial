@@ -6,8 +6,208 @@
     <title>Z-Anime Network</title>
     <link rel="stylesheet" href="comunidad.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Pantalla completa que bloquea todo el fondo */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0a0e17;
+            z-index: 99999; /* Se asegura de estar por encima del feed y menú inferior */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: #121824;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .auth-logo {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+        .auth-logo span {
+            color: #00f3ff;
+            text-shadow: 0 0 8px #00f3ff;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: #0a0e17;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 25px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #62728f;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-tab.active {
+            background: #1c2436;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .auth-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: left;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #62728f;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input {
+            background: #0a0e17;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #00f3ff;
+        }
+
+        /* Subir Foto de Perfil en Registro */
+        .register-avatar-upload {
+            width: 90px;
+            height: 90px;
+            background: #0a0e17;
+            border: 2px dashed #62728f;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .avatar-preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #62728f;
+            font-size: 0.65rem;
+            font-weight: 700;
+            gap: 4px;
+        }
+        .avatar-preview-placeholder i { font-size: 1.2rem; }
+
+        .register-avatar-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-auth-submit {
+            background: linear-gradient(135deg, #ff007f, #c0005f);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-auth-submit:active { transform: scale(0.98); }
+        .auth-hidden { display: none !important; }
+    </style>
 </head>
 <body>
+
+    <div class="auth-overlay auth-hidden" id="auth-gatekeeper">
+        <div class="auth-card">
+            <div class="auth-logo">Z<span>·</span>NET</div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="cambiarPestaña('login')">Entrar</button>
+                <button class="auth-tab" id="tab-register" onclick="cambiarPestaña('register')">Registrarse</button>
+            </div>
+
+            <div id="form-login" class="auth-form-container">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="login-user" placeholder="Escribe tu usuario">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                </div>
+                <button class="btn-auth-submit" onclick="procesarLogin()">Entrar a la red</button>
+            </div>
+
+            <div id="form-register" class="auth-form-container auth-hidden">
+                <div class="register-avatar-upload" onclick="document.getElementById('reg-selector-foto').click()">
+                    <div class="avatar-preview-placeholder" id="avatar-preview-box">
+                        <i class="fas fa-camera"></i>
+                        <span>Subir Foto</span>
+                    </div>
+                    <img id="reg-avatar-img" class="auth-hidden" alt="Vista previa">
+                </div>
+                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFotoRegistro(event)">
+
+                <div class="input-group">
+                    <label><i class="fas fa-user-plus"></i> Crear Usuario</label>
+                    <input type="text" id="reg-user" placeholder="Ej: Yuki">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Crear Contraseña</label>
+                    <input type="password" id="reg-pass" placeholder="Mínimo 4 caracteres">
+                </div>
+                <button class="btn-auth-submit" onclick="procesarRegistro()">Crear Perfil</button>
+            </div>
+        </div>
+    </div>
 
     <header class="anime-header">
         <div class="logo">Z<span>·</span>NET</div>
@@ -61,7 +261,7 @@
     </main>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-btn" id="nav-home">
+        <a href="index.html" class="nav-btn id="nav-home">
             <span class="material-icons-round">home</span>
         </a>
         
@@ -82,6 +282,85 @@
         </a>
     </nav>
 
+    <script>
+        let fotoTemporalBase64 = "";
 
+        // Comprobación de seguridad instantánea al cargar la página de inicio
+        window.onload = function() {
+            const sesionAbierta = localStorage.getItem('znet_sesion_activa');
+            if (!sesionAbierta) {
+                // Si no está registrado, se remueve el oculto y bloquea toda la pantalla
+                document.getElementById('auth-gatekeeper').classList.remove('auth-hidden');
+            }
+        }
+
+        function cambiarPestaña(tipo) {
+            if (tipo === 'login') {
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('tab-register').classList.remove('active');
+                document.getElementById('form-login').classList.remove('auth-hidden');
+                document.getElementById('form-register').classList.add('auth-hidden');
+            } else {
+                document.getElementById('tab-register').classList.add('active');
+                document.getElementById('tab-login').classList.remove('active');
+                document.getElementById('form-register').classList.remove('auth-hidden');
+                document.getElementById('form-login').classList.add('auth-hidden');
+            }
+        }
+
+        function previsualizarFotoRegistro(event) {
+            const archivo = event.target.files[0];
+            if (archivo) {
+                const leerArchivo = new FileReader();
+                leerArchivo.onload = function(e) {
+                    fotoTemporalBase64 = e.target.result;
+                    document.getElementById('avatar-preview-box').classList.add('auth-hidden');
+                    const img = document.getElementById('reg-avatar-img');
+                    img.src = fotoTemporalBase64;
+                    img.classList.remove('auth-hidden');
+                }
+                leerArchivo.readAsDataURL(archivo);
+            }
+        }
+
+        function procesarRegistro() {
+            const usuario = document.getElementById('reg-user').value.trim();
+            const contrasena = document.getElementById('reg-pass').value.trim();
+            
+            if (!usuario || !contrasena) {
+                alert("Por favor, rellena los datos de tu nueva cuenta.");
+                return;
+            }
+            if (!fotoTemporalBase64) {
+                alert("Sube una foto para tu avatar exclusivo.");
+                return;
+            }
+
+            // Almacenar los datos en la memoria interna del terminal del usuario
+            localStorage.setItem(`znet_user_${usuario.toLowerCase()}`, usuario);
+            localStorage.setItem(`znet_pass_${usuario.toLowerCase()}`, contrasena);
+            localStorage.setItem(`znet_pic_${usuario.toLowerCase()}`, fotoTemporalBase64);
+            localStorage.setItem(`znet_frame_${usuario.toLowerCase()}`, 'cyan');
+
+            // Iniciar sesión y quitar bloqueo
+            localStorage.setItem('znet_sesion_activa', usuario.toLowerCase());
+            document.getElementById('auth-gatekeeper').classList.add('auth-hidden');
+        }
+
+        function procesarLogin() {
+            const usuario = document.getElementById('login-user').value.trim().toLowerCase();
+            const contrasena = document.getElementById('login-pass').value.trim();
+
+            const cuentaExiste = localStorage.getItem(`znet_user_${usuario}`);
+            const passwordCorrecto = localStorage.getItem(`znet_pass_${usuario}`);
+
+            if (cuentaExiste && passwordCorrecto === contrasena) {
+                localStorage.setItem('znet_sesion_activa', usuario);
+                document.getElementById('auth-gatekeeper').classList.add('auth-hidden');
+            } else {
+                alert("Datos incorrectos. Si no tienes una cuenta, pulsa en 'Registrarse'.");
+            }
+        }
+    </script>
 </body>
 </html>
