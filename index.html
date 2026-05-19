@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* Pantalla completa que bloquea todo el fondo */
+        /* Pantalla completa que bloquea todo el fondo, incluyendo la barra inferior */
         .auth-overlay {
             position: fixed;
             top: 0;
@@ -17,7 +17,7 @@
             width: 100vw;
             height: 100vh;
             background-color: #0a0e17;
-            z-index: 99999; /* Se asegura de estar por encima del feed y menú inferior */
+            z-index: 999999; /* El número más alto para tapar la barra de abajo */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -111,7 +111,7 @@
             border-color: #00f3ff;
         }
 
-        /* Subir Foto de Perfil en Registro */
+        /* Zona para cargar foto en el Registro */
         .register-avatar-upload {
             width: 90px;
             height: 90px;
@@ -260,8 +260,8 @@
 
     </main>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-btn id="nav-home">
+    <nav class="bottom-nav" id="main-bottom-nav">
+        <a href="index.html" class="nav-btn" id="nav-home">
             <span class="material-icons-round">home</span>
         </a>
         
@@ -289,8 +289,9 @@
         window.onload = function() {
             const sesionAbierta = localStorage.getItem('znet_sesion_activa');
             if (!sesionAbierta) {
-                // Si no está registrado, se remueve el oculto y bloquea toda la pantalla
+                // Si no hay sesión, muestra el bloqueo y esconde por completo la barra
                 document.getElementById('auth-gatekeeper').classList.remove('auth-hidden');
+                document.getElementById('main-bottom-nav').style.display = 'none';
             }
         }
 
@@ -336,15 +337,16 @@
                 return;
             }
 
-            // Almacenar los datos en la memoria interna del terminal del usuario
+            // Almacenar los datos en la memoria del dispositivo actual
             localStorage.setItem(`znet_user_${usuario.toLowerCase()}`, usuario);
             localStorage.setItem(`znet_pass_${usuario.toLowerCase()}`, contrasena);
             localStorage.setItem(`znet_pic_${usuario.toLowerCase()}`, fotoTemporalBase64);
             localStorage.setItem(`znet_frame_${usuario.toLowerCase()}`, 'cyan');
 
-            // Iniciar sesión y quitar bloqueo
+            // Iniciar sesión, quitar bloqueo y restaurar la barra inferior
             localStorage.setItem('znet_sesion_activa', usuario.toLowerCase());
             document.getElementById('auth-gatekeeper').classList.add('auth-hidden');
+            document.getElementById('main-bottom-nav').style.display = 'flex';
         }
 
         function procesarLogin() {
@@ -356,7 +358,9 @@
 
             if (cuentaExiste && passwordCorrecto === contrasena) {
                 localStorage.setItem('znet_sesion_activa', usuario);
+                // Quitar bloqueo y restaurar la barra inferior
                 document.getElementById('auth-gatekeeper').classList.add('auth-hidden');
+                document.getElementById('main-bottom-nav').style.display = 'flex';
             } else {
                 alert("Datos incorrectos. Si no tienes una cuenta, pulsa en 'Registrarse'.");
             }
