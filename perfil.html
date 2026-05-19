@@ -32,7 +32,10 @@
             <span class="invocador-tag">Avatar Destacado</span>
             
             <div class="anime-card-epic frame-neon-cyan" id="main-card">
-                <div class="epic-badge">USUARIO ÉPICO</div>
+                <div class="account-rank-minimal">
+                    <i class="fas fa-crown rank-icon"></i>
+                    <span class="rank-name">Elite</span>
+                </div>
                 
                 <div class="card-art-wrapper">
                     <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500" id="foto-avatar" class="card-illustration" alt="Avatar">
@@ -88,7 +91,21 @@
     </div>
 
     <script>
-        // Función para cambiar la imagen seleccionando cualquier archivo de tu teléfono
+        // Al cargar la página, revisa si el usuario ya tenía una foto guardada en su teléfono
+        window.onload = function() {
+            const fotoGuardada = localStorage.getItem('fotoPerfilZNet');
+            if (fotoGuardada) {
+                document.getElementById('foto-avatar').src = fotoGuardada;
+            }
+            
+            // También recuerda el último marco que dejaste equipado
+            const marcoGuardado = localStorage.getItem('marcoPerfilZNet');
+            if (marcoGuardado) {
+                cambiarMarco(marcoGuardado);
+            }
+        }
+
+        // Procesa la foto subida y la mete a la memoria interna del navegador
         function subirFoto(event) {
             const archivo = event.target.files[0];
             
@@ -96,27 +113,28 @@
                 const leerArchivo = new FileReader();
                 
                 leerArchivo.onload = function(e) {
-                    // Actualiza la foto de tu tarjeta en tiempo real
-                    document.getElementById('foto-avatar').src = e.target.result;
+                    const imagenBase64 = e.target.result;
+                    
+                    // 1. La pinta en la pantalla al instante
+                    document.getElementById('foto-avatar').src = imagenBase64;
+                    
+                    // 2. La guarda en el almacenamiento local del teléfono
+                    localStorage.setItem('fotoPerfilZNet', imagenBase64);
                 }
                 
                 leerArchivo.readAsDataURL(archivo);
             }
         }
 
-        // Función interactiva para equipar los marcos exclusivos de la tienda
+        // Cambia los estilos del marco y guarda la elección
         function cambiarMarco(tipo) {
             const tarjeta = document.getElementById('main-card');
             
-            // Limpiar clases antiguas de la tarjeta
             tarjeta.classList.remove('frame-default', 'frame-neon-cyan', 'frame-neon-magenta');
-            
-            // Quitar el estado activo de los botones de la cuadrícula
             document.getElementById('btn-cyan').classList.remove('active');
             document.getElementById('btn-magenta').classList.remove('active');
             document.getElementById('btn-default').classList.remove('active');
             
-            // Resetear textos de estado
             document.getElementById('status-cyan').textContent = 'Usar';
             document.getElementById('status-cyan').className = 'frame-status status-unlocked';
             document.getElementById('status-magenta').textContent = 'Usar';
@@ -124,7 +142,6 @@
             document.getElementById('status-default').textContent = 'Usar';
             document.getElementById('status-default').className = 'frame-status status-unlocked';
 
-            // Activar el cosmético que tocaste
             if (tipo === 'cyan') {
                 tarjeta.classList.add('frame-neon-cyan');
                 document.getElementById('btn-cyan').classList.add('active');
@@ -141,6 +158,9 @@
                 document.getElementById('status-default').textContent = 'Equipado';
                 document.getElementById('status-default').className = 'frame-status status-equipped';
             }
+            
+            // Guarda tu marco seleccionado en la memoria local
+            localStorage.setItem('marcoPerfilZNet', tipo);
         }
     </script>
 </body>
