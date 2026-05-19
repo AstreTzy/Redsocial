@@ -1,18 +1,17 @@
 /* ==========================================================================
-   VARIABLES GLOBALES (Alineadas con la estética de Z-NET)
+   VARIABLES GLOBALES (Estética Z-NET Premium)
    ========================================================================== */
 :root {
-    --bg-main: #0a0e17;          /* Fondo oscuro general de la app */
-    --bg-card: #121824;          /* Fondo de los contenedores y tarjetas */
-    --bg-card-light: #1c2436;    /* Fondo al pasar el cursor o presionar */
-    --text-main: #ffffff;        /* Texto blanco principal */
-    --text-muted: #62728f;       /* Texto gris para etiquetas secundarias */
-    --neon-cyan: #00f3ff;        /* El azul neón de Z-chats */
-    --neon-magenta: #ff007f;     /* El rosa neón del botón central */
-    --neon-gold: #ffb74d;        /* El dorado exclusivo */
+    --bg-main: #0a0e17;
+    --bg-card: #121824;
+    --bg-card-light: #1c2436;
+    --text-main: #ffffff;
+    --text-muted: #62728f;
+    --neon-cyan: #00f3ff;
+    --neon-magenta: #ff007f;
+    --neon-gold: #ffb74d;
 }
 
-/* Reset básico para móvil */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -33,7 +32,146 @@ body {
     padding: 20px 15px;
 }
 
-/* --- Cabecera del Perfil + Verificado --- */
+/* Clases útiles para ocultar pantallas */
+.hidden { display: none !important; }
+
+/* ==========================================================================
+   ESTILOS DE LA PANTALLA DE ACCESO (LOGIN Y REGISTRO)
+   ========================================================================== */
+.auth-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px 20px;
+    margin-top: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+.auth-logo {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.auth-tabs {
+    display: flex;
+    background: var(--bg-main);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 25px;
+}
+
+.auth-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.auth-tab.active {
+    background: var(--bg-card-light);
+    color: var(--text-main);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.auth-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-align: left;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.input-group input {
+    background: var(--bg-main);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px;
+    color: #fff;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.input-group input:focus {
+    border-color: var(--neon-cyan);
+}
+
+/* Botón Subir Foto Registro */
+.register-avatar-upload {
+    width: 90px;
+    height: 90px;
+    background: var(--bg-main);
+    border: 2px dashed var(--text-muted);
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+.avatar-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    gap: 4px;
+}
+.avatar-preview-placeholder i { font-size: 1.2rem; }
+
+.register-avatar-upload img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn-auth-submit {
+    background: linear-gradient(135deg, var(--neon-magenta), #c0005f);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-auth-submit:active { transform: scale(0.98); }
+
+
+/* ==========================================================================
+   ESTILOS DE LA PANTALLA DE PERFIL (Ya Autenticado)
+   ========================================================================== */
 .profile-header {
     display: flex;
     justify-content: space-between;
@@ -48,39 +186,31 @@ body {
     gap: 8px;
     font-size: 1.8rem;
     font-weight: 900;
-    letter-spacing: 1px;
 }
 .neon-dot { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
 
-/* Icono de Verificado Animado */
 .verified-badge {
     color: var(--neon-cyan);
     font-size: 1.3rem;
     display: inline-flex;
-    align-items: center;
     filter: drop-shadow(0 0 6px var(--neon-cyan));
-    animation: verifiedPulse 3s infinite alternate;
 }
 
-@keyframes verifiedPulse {
-    0% { filter: drop-shadow(0 0 4px var(--neon-cyan)); opacity: 0.8; }
-    100% { filter: drop-shadow(0 0 10px var(--neon-cyan)); opacity: 1; }
-}
-
-.btn-edit-profile {
-    background: var(--bg-card-light);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text-main);
+.btn-logout {
+    background: #251622;
+    border: 1px solid rgba(255, 0, 127, 0.3);
+    color: var(--neon-magenta);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.85rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 5px;
     cursor: pointer;
 }
 
-/* --- Tarjeta de Avatar con Marcos Dinámicos --- */
+/* --- Tarjeta Exhibidora --- */
 .card-showcase-section {
     display: flex;
     flex-direction: column;
@@ -108,7 +238,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* NUEVA ETIQUETA EXCLUSIVA MINIMALISTA */
+/* MARCO CORONA MINIMALISTA EXCLUSIVO */
 .account-rank-minimal {
     position: absolute;
     top: 15px;
@@ -117,7 +247,7 @@ body {
     align-items: center;
     gap: 6px;
     z-index: 5;
-    background: rgba(10, 14, 23, 0.75);
+    background: rgba(10, 14, 23, 0.8);
     padding: 4px 10px;
     border-radius: 20px;
     border: 1px solid rgba(255, 183, 77, 0.3);
@@ -138,16 +268,12 @@ body {
     text-transform: uppercase;
 }
 
-/* ESTILOS DE LOS MARCOS INTERACTIVOS */
-.frame-default {
-    border: 3px solid rgba(255,255,255,0.1);
-}
-
+/* MARCOS NEÓN */
+.frame-default { border: 3px solid rgba(255,255,255,0.1); }
 .frame-neon-cyan {
     border: 3px solid var(--neon-cyan);
     box-shadow: 0 0 20px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
 }
-
 .frame-neon-magenta {
     border: 3px solid var(--neon-magenta);
     box-shadow: 0 0 20px rgba(255, 0, 127, 0.4), inset 0 0 10px rgba(255, 0, 127, 0.2);
@@ -178,13 +304,11 @@ body {
     text-align: center;
 }
 
-.card-main-title { font-size: 1rem; color: #fff; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.5px;}
+.card-main-title { font-size: 1.1rem; color: #fff; font-weight: 800; margin-bottom: 4px; }
 .card-sub-title { font-size: 0.75rem; color: var(--neon-cyan); font-weight: 600;}
 
-/* --- Sección Colección de Marcos --- */
-.frames-section { 
-    margin-bottom: 25px; 
-}
+/* --- Tienda / Sección de Marcos --- */
+.frames-section { margin-bottom: 25px; }
 
 .section-title {
     font-size: 1rem;
@@ -212,7 +336,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -228,11 +351,7 @@ body {
     height: 40px;
     border-radius: 50%;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-
 .preview-default { border: 2px solid rgba(255,255,255,0.2); }
 .preview-cyan { border: 3px solid var(--neon-cyan); filter: drop-shadow(0 0 4px var(--neon-cyan)); }
 .preview-magenta { border: 3px solid var(--neon-magenta); filter: drop-shadow(0 0 4px var(--neon-magenta)); }
@@ -244,14 +363,11 @@ body {
     margin-bottom: 4px;
 }
 
-.frame-status { 
-    font-size: 0.65rem; 
-    font-weight: 600; 
-}
+.frame-status { font-size: 0.65rem; font-weight: 600; }
 .status-equipped { color: var(--neon-cyan); }
 .status-unlocked { color: var(--text-muted); }
 
-/* --- Barra de Progreso --- */
+/* Progress */
 .collection-progress-section {
     background: var(--bg-card);
     padding: 15px;
@@ -280,10 +396,8 @@ body {
     width: 33%;
     background: linear-gradient(90deg, var(--neon-magenta), var(--neon-cyan));
     box-shadow: 0 0 8px var(--neon-cyan);
-    border-radius: 10px;
 }
 
-/* --- Botón Inferior --- */
 .btn-get-frames {
     width: 100%;
     background: linear-gradient(135deg, #1b2030, #131722);
@@ -293,20 +407,7 @@ body {
     font-weight: 800;
     padding: 14px;
     border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15);
-    transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-.btn-get-frames:active {
-    transform: scale(0.98);
-    background: var(--neon-cyan);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-cyan);
+    cursor: pointer;
 }
