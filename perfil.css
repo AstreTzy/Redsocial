@@ -36,12 +36,8 @@ body {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
     background: var(--bg-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    font-size: 2rem;
-    color: var(--text-main);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999; font-size: 2rem; color: var(--text-main);
 }
 
 .profile-container { max-width: 450px; margin: 0 auto; padding: 15px; }
@@ -54,45 +50,35 @@ body {
     margin-top: 40px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     text-align: center;
-    transition: all 0.3s;
 }
-body.dark-theme .auth-card { box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
 
 .auth-logo { font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 25px; }
 .neon-dot { color: #00f3ff; }
 
 .auth-tabs { display: flex; background: var(--border-color); border-radius: 10px; padding: 4px; margin-bottom: 25px; }
-.auth-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 10px; font-weight: 700; font-size: 0.95rem; border-radius: 8px; cursor: pointer; }
+.auth-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 10px; font-weight: 700; border-radius: 8px; cursor: pointer; }
 .auth-tab.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 
 .auth-form-container { display: flex; flex-direction: column; gap: 18px; text-align: left; }
 .input-group label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; display: block;}
 .input-group input { width: 100%; background: transparent; border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; color: var(--text-main); font-size: 0.95rem; outline: none; }
 
-.register-avatar-upload { width: 90px; height: 90px; background: transparent; border: 2px dashed var(--text-muted); border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; }
+.register-avatar-upload { width: 90px; height: 90px; background: transparent; border: 2px dashed var(--text-muted); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; }
 .avatar-preview-placeholder { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.65rem; font-weight: 700; }
 .register-avatar-upload img { width: 100%; height: 100%; object-fit: cover; }
 
-.btn-auth-submit { background: var(--btn-bg); color: var(--btn-text); border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
+.btn-auth-submit { background: var(--btn-bg); color: var(--btn-text); border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
-/* --- PERFIL PRINCIPAL CON DIAGONAL EXACTA --- */
+/* --- PERFIL PRINCIPAL Y DIAGONAL --- */
 #main-profile-screen { position: relative; width: 100%; min-height: 100vh; overflow-x: hidden; }
 
-/* Franja superior oscura con el corte diagonal idéntico al diseño original */
 .profile-diagonal-bg {
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 175px;
+    position: absolute; top: 0; left: 0; width: 100%; height: 175px;
     background: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
     clip-path: polygon(0 0, 100% 0, 100% 65%, 0 100%);
     z-index: 1;
 }
-
-body.dark-theme .profile-diagonal-bg {
-    background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%);
-}
+body.dark-theme .profile-diagonal-bg { background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%); }
 
 .social-content-wrapper { position: relative; z-index: 2; max-width: 450px; margin: 0 auto; padding: 15px; }
 .profile-main-content { padding-top: 25px; }
@@ -102,15 +88,32 @@ body.dark-theme .profile-diagonal-bg {
 .social-top-title { font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
 
 .social-profile-header { display: flex; flex-direction: column; align-items: center; text-align: center; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); margin-top: 5px; }
-.social-avatar-container { position: relative; width: 110px; height: 110px; border-radius: 50%; margin-bottom: 15px; background: var(--bg-card); padding: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-.social-avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-.social-verified-badge { position: absolute; bottom: 6px; right: 6px; background: #0095f6; color: #fff; font-size: 0.6rem; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-card); }
 
-.social-profile-name { font-size: 1.5rem; font-weight: 900; margin-bottom: 2px; }
-.social-profile-bio { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+/* --- MARCOS DINÁMICOS DEL AVATAR PRINCIPAL --- */
+.social-avatar-container {
+    position: relative; width: 116px; height: 116px; border-radius: 50%; margin-bottom: 12px;
+    padding: 4px; /* Grosor del marco */
+    background: var(--bg-card);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.social-avatar-container:hover { transform: scale(1.03); }
 
-.social-action-buttons { display: flex; gap: 12px; width: 100%; max-width: 320px; margin-bottom: 25px; }
-.btn-social-outline, .btn-social-solid { flex: 1; padding: 12px; border-radius: 25px; font-size: 0.8rem; font-weight: 800; cursor: pointer; letter-spacing: 0.5px; }
+/* Estilos de marcos específicos */
+.social-avatar-container.marco-oro { background: linear-gradient(135deg, #f39c12, #f1c40f, #d35400); box-shadow: 0 0 15px rgba(241, 196, 15, 0.5); }
+.social-avatar-container.marco-neon { background: linear-gradient(135deg, #00f3ff, #9b59b6, #e74c3c); box-shadow: 0 0 15px rgba(0, 243, 255, 0.6); }
+.social-avatar-container.marco-diamante { background: linear-gradient(135deg, #00c6ff, #0072ff, #ffffff); box-shadow: 0 0 20px rgba(0, 198, 255, 0.8); }
+
+.social-avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+.social-verified-badge { position: absolute; bottom: 6px; right: 6px; background: #0095f6; color: #fff; font-size: 0.6rem; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-card); z-index: 3; }
+.marco-badge-hint { position: absolute; top: 0; right: 0; background: var(--btn-bg); color: var(--btn-text); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; border: 2px solid var(--bg-card); z-index: 3; }
+
+.social-profile-name { font-size: 1.45rem; font-weight: 900; margin-bottom: 4px; }
+.social-profile-bio { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; margin-bottom: 18px; }
+
+.social-action-buttons { display: flex; gap: 12px; width: 100%; max-width: 320px; margin-bottom: 22px; }
+.btn-social-outline, .btn-social-solid { flex: 1; padding: 11px; border-radius: 25px; font-size: 0.75rem; font-weight: 800; cursor: pointer; letter-spacing: 0.5px; }
 .btn-social-outline { background: transparent; border: 1.5px solid var(--text-main); color: var(--text-main); }
 .btn-social-solid { background: var(--btn-bg); border: 1.5px solid var(--btn-bg); color: var(--btn-text); }
 
@@ -124,18 +127,38 @@ body.dark-theme .profile-diagonal-bg {
 .social-tab-item.active { color: var(--text-main); }
 .social-tab-item.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--text-main); }
 
-/* Galería con alturas variables (Estilo Pinterest real) */
+/* Galería de fotos */
 .social-photos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; padding-bottom: 30px; }
 .grid-photo-item { position: relative; width: 100%; border-radius: 14px; overflow: hidden; background: var(--grid-bg); cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
 .item-tall { height: 210px; }
 .item-short { height: 140px; }
-
 .grid-photo-item img { width: 100%; height: 100%; object-fit: cover; display: none; }
 .upload-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); color: white; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; opacity: 0; transition: opacity 0.2s; }
 .grid-photo-item:hover .upload-overlay { opacity: 1; }
 .grid-photo-item img[style*="display: none"] + .upload-overlay { opacity: 1; background: transparent; color: var(--text-muted); }
 
+/* --- MODAL DE TIENDA Y MARCOS --- */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; display: flex; justify-content: center; align-items: center; padding: 15px; }
-.modal-content { background: var(--bg-card); width: 100%; max-width: 350px; border-radius: 20px; padding: 25px; text-align: center; border: 1px solid var(--border-color); }
-.modal-content h3 { margin-bottom: 20px; }
+.shop-modal { max-width: 380px !important; }
+.modal-content { background: var(--bg-card); width: 100%; border-radius: 20px; padding: 25px; text-align: center; border: 1px solid var(--border-color); }
+.modal-content h3 { margin-bottom: 8px; font-size: 1.3rem; }
+.modal-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px; }
+
+.marcos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-height: 320px; overflow-y: auto; padding: 4px; }
+.marco-card { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 14px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+.marco-card:hover { transform: translateY(-2px); border-color: var(--text-main); }
+
+.preview-ring { width: 55px; height: 55px; border-radius: 50%; padding: 3px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; }
+.preview-avatar-inner { width: 100%; height: 100%; background: var(--border-color); border-radius: 50%; }
+
+/* Estilos de marcos miniaturas dentro de la tienda */
+.marco-default { background: var(--border-color); }
+.marco-oro { background: linear-gradient(135deg, #f39c12, #f1c40f); }
+.marco-neon { background: linear-gradient(135deg, #00f3ff, #9b59b6); }
+.marco-diamante { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+
+.marco-title { font-size: 0.8rem; font-weight: 800; margin-bottom: 3px; }
+.marco-status { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-align: center; }
+.marco-status.unlocked { color: #27ae60; }
+
 .modal-actions { display: flex; gap: 10px; margin-top: 25px; }
