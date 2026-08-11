@@ -9,12 +9,11 @@
 </head>
 <body>
 
-    <!-- Pantalla de carga para evitar parpadeos -->
     <div id="loading-screen" class="loading-screen">
         <i class="fas fa-spinner fa-spin"></i>
     </div>
 
-    <!-- PANTALLA DE ACCESO (LOGIN Y REGISTRO) -->
+    <!-- PANTALLA DE ACCESO -->
     <div class="profile-container hidden" id="auth-container">
         <div class="auth-card">
             <div class="auth-logo">Z·NET<span class="neon-dot">.</span></div>
@@ -24,7 +23,6 @@
                 <button class="auth-tab" id="tab-register" onclick="cambiarPestaña('register')">Registrarse</button>
             </div>
 
-            <!-- Formulario de Login -->
             <div id="form-login" class="auth-form-container">
                 <div class="input-group">
                     <label><i class="fas fa-user"></i> Usuario</label>
@@ -37,7 +35,6 @@
                 <button class="btn-auth-submit" onclick="procesarLogin()">Iniciar Sesión</button>
             </div>
 
-            <!-- Formulario de Registro -->
             <div id="form-register" class="auth-form-container hidden">
                 <div class="register-avatar-upload" onclick="document.getElementById('reg-selector-foto').click()">
                     <div class="avatar-preview-placeholder" id="avatar-preview-box">
@@ -46,7 +43,7 @@
                     </div>
                     <img id="reg-avatar-img" class="hidden" alt="Vista previa">
                 </div>
-                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFoto(event, 'reg-avatar-img', 'avatar-preview-box')">
+                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="procesarImagenSeleccionada(event, 'reg-avatar-img', 'avatar-preview-box')">
 
                 <div class="input-group">
                     <label><i class="fas fa-user-plus"></i> Crear Usuario</label>
@@ -61,25 +58,25 @@
         </div>
     </div>
 
-    <!-- PANTALLA PRINCIPAL DE PERFIL -->
+    <!-- PANTALLA PRINCIPAL -->
     <div id="main-profile-screen" class="hidden">
         
-        <!-- Fondo superior diagonal oscuro -->
-        <div class="profile-diagonal-bg"></div>
-
-        <div class="social-content-wrapper">
-            <!-- Barra Superior -->
-            <div class="social-top-bar">
-                <button class="btn-icon-top" onclick="cerrarSesion()" title="Cerrar Sesión">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <span class="social-top-title">Profile</span>
-                <button class="btn-icon-top" onclick="alternarTema()" title="Cambiar Tema">
-                    <i class="fas fa-moon" id="theme-icon"></i>
-                </button>
+        <!-- Franja superior diagonal oscura restaurada -->
+        <div class="profile-diagonal-bg">
+            <div class="social-content-wrapper">
+                <div class="social-top-bar">
+                    <button class="btn-icon-top" onclick="cerrarSesion()" title="Cerrar Sesión">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <span class="social-top-title">Profile</span>
+                    <button class="btn-icon-top" onclick="alternarTema()" title="Cambiar Tema">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                    </button>
+                </div>
             </div>
+        </div>
 
-            <!-- Cabecera del Perfil -->
+        <div class="social-content-wrapper profile-main-content">
             <div class="social-profile-header">
                 <div class="social-avatar-container">
                     <img src="" id="foto-avatar" class="social-avatar-img" alt="Avatar">
@@ -89,13 +86,11 @@
                 <h1 class="social-profile-name" id="display-username">Nombre</h1>
                 <p class="social-profile-bio" id="display-bio">Vlogger & Fashion Lover</p>
 
-                <!-- Botones de Acción -->
                 <div class="social-action-buttons">
                     <button class="btn-social-outline" onclick="abrirModalEdicion()">EDIT PROFILE</button>
                     <button class="btn-social-solid">FOLLOW</button>
                 </div>
 
-                <!-- Estadísticas -->
                 <div class="social-stats-row">
                     <div class="stat-box"><span class="stat-number">252k</span><span class="stat-label">Followers</span></div>
                     <div class="stat-box"><span class="stat-number">378</span><span class="stat-label">Following</span></div>
@@ -103,7 +98,6 @@
                 </div>
             </div>
 
-            <!-- Pestañas de Contenido -->
             <div class="social-tabs-nav">
                 <button class="social-tab-item active">PHOTOS</button>
                 <button class="social-tab-item">VIDEOS</button>
@@ -111,30 +105,28 @@
                 <button class="social-tab-item">ABOUT</button>
             </div>
 
-            <!-- Cuadrícula de Fotos (Galería interactiva) -->
+            <!-- Galería estilo Pinterest con alturas variables -->
             <div class="social-photos-grid">
-                <!-- Se generan dinámicamente con JS -->
-                <div class="grid-photo-item" onclick="triggerSubidaGaleria(1)"><img id="gallery-img-1" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
-                <div class="grid-photo-item" onclick="triggerSubidaGaleria(2)"><img id="gallery-img-2" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
-                <div class="grid-photo-item" onclick="triggerSubidaGaleria(3)"><img id="gallery-img-3" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
-                <div class="grid-photo-item" onclick="triggerSubidaGaleria(4)"><img id="gallery-img-4" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
-                <div class="grid-photo-item" onclick="triggerSubidaGaleria(5)"><img id="gallery-img-5" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
-                <div class="grid-photo-item" onclick="triggerSubidaGaleria(6)"><img id="gallery-img-6" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(1)"><img id="gallery-img-1" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(2)"><img id="gallery-img-2" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(3)"><img id="gallery-img-3" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(4)"><img id="gallery-img-4" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(5)"><img id="gallery-img-5" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(6)"><img id="gallery-img-6" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
             </div>
             
-            <!-- Input oculto para galería -->
-            <input type="file" id="input-gallery" accept="image/*" style="display: none;" onchange="procesarSubidaGaleria(event)">
+            <input type="file" id="input-gallery" accept="image/*" style="display: none;" onchange="procesarImagenGaleria(event)">
         </div>
     </div>
 
-    <!-- Modal Editar Perfil -->
+    <!-- Modal Editar -->
     <div id="modal-edicion" class="modal-overlay hidden">
         <div class="modal-content">
             <h3>Editar Perfil</h3>
             <div class="register-avatar-upload" onclick="document.getElementById('edit-selector-foto').click()">
                 <img id="edit-avatar-img" src="" alt="Vista previa">
             </div>
-            <input type="file" id="edit-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFoto(event, 'edit-avatar-img', null)">
+            <input type="file" id="edit-selector-foto" accept="image/*" style="display: none;" onchange="procesarImagenSeleccionada(event, 'edit-avatar-img', null)">
             
             <div class="input-group">
                 <label>Nombre a mostrar</label>
@@ -157,22 +149,24 @@
         let idGaleriaActual = 0;
 
         window.onload = function() {
-            // Aplicar tema guardado
             if(localStorage.getItem('znet_theme') === 'dark') {
                 document.body.classList.add('dark-theme');
                 document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
             }
 
-            // Verificar sesión simulando pequeña carga (evita parpadeo)
             setTimeout(() => {
-                document.getElementById('loading-screen').classList.add('hidden');
+                const loadingScreen = document.getElementById('loading-screen');
+                if(loadingScreen) loadingScreen.classList.add('hidden');
+                
                 const usuarioActivo = localStorage.getItem('znet_sesion_activa');
-                if (usuarioActivo) cargarPerfilUsuario(usuarioActivo);
-                else mostrarPantallaAcceso();
-            }, 500);
+                if (usuarioActivo) {
+                    cargarPerfilUsuario(usuarioActivo);
+                } else {
+                    mostrarPantallaAcceso();
+                }
+            }, 300);
         }
 
-        // --- SISTEMA DE TEMA ---
         function alternarTema() {
             const body = document.body;
             const icon = document.getElementById('theme-icon');
@@ -187,7 +181,6 @@
             }
         }
 
-        // --- PESTAÑAS Y PREVISUALIZACIÓN ---
         function cambiarPestaña(tipo) {
             document.getElementById('tab-login').classList.toggle('active', tipo === 'login');
             document.getElementById('tab-register').classList.toggle('active', tipo === 'register');
@@ -195,34 +188,60 @@
             document.getElementById('form-register').classList.toggle('hidden', tipo !== 'register');
         }
 
-        function previsualizarFoto(event, imgId, boxId) {
+        function procesarImagenSeleccionada(event, imgId, boxId) {
             const archivo = event.target.files[0];
-            if (archivo) {
-                const leerArchivo = new FileReader();
-                leerArchivo.onload = function(e) {
-                    fotoTemporalBase64 = e.target.result;
-                    if(boxId) document.getElementById(boxId).classList.add('hidden');
-                    const img = document.getElementById(imgId);
-                    img.src = fotoTemporalBase64;
-                    img.classList.remove('hidden');
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400;
+                    const MAX_HEIGHT = 400;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    fotoTemporalBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+                    if(boxId) {
+                        const box = document.getElementById(boxId);
+                        if(box) box.classList.add('hidden');
+                    }
+                    const imgElement = document.getElementById(imgId);
+                    if(imgElement) {
+                        imgElement.src = fotoTemporalBase64;
+                        imgElement.classList.remove('hidden');
+                    }
                 }
-                leerArchivo.readAsDataURL(archivo);
+                img.src = e.target.result;
             }
+            lector.readAsDataURL(archivo);
         }
 
-        // --- AUTENTICACIÓN ---
         function procesarRegistro() {
             const usuario = document.getElementById('reg-user').value.trim();
             const contrasena = document.getElementById('reg-pass').value.trim();
             
-            if (!usuario || !contrasena) return alert("Llena todos los campos.");
-            if (!fotoTemporalBase64) return alert("Sube tu foto de perfil.");
+            if (!usuario || !contrasena) { alert("Llena todos los campos de texto."); return; }
+            if (!fotoTemporalBase64) { alert("Sube una foto de perfil válida."); return; }
 
             const key = usuario.toLowerCase();
             localStorage.setItem(`znet_user_${key}`, usuario);
             localStorage.setItem(`znet_pass_${key}`, contrasena);
             localStorage.setItem(`znet_pic_${key}`, fotoTemporalBase64);
-            localStorage.setItem(`znet_bio_${key}`, "Vlogger & Fashion Lover"); // Bio por defecto
+            localStorage.setItem(`znet_bio_${key}`, "Vlogger & Fashion Lover");
 
             localStorage.setItem('znet_sesion_activa', key);
             cargarPerfilUsuario(key);
@@ -232,7 +251,10 @@
             const usuario = document.getElementById('login-user').value.trim().toLowerCase();
             const contrasena = document.getElementById('login-pass').value.trim();
 
-            if (localStorage.getItem(`znet_pass_${usuario}`) === contrasena) {
+            if (!usuario || !contrasena) { alert("Introduce usuario y contraseña."); return; }
+
+            const passGuardado = localStorage.getItem(`znet_pass_${usuario}`);
+            if (passGuardado && passGuardado === contrasena) {
                 localStorage.setItem('znet_sesion_activa', usuario);
                 cargarPerfilUsuario(usuario);
             } else {
@@ -242,20 +264,21 @@
 
         function cerrarSesion() {
             localStorage.removeItem('znet_sesion_activa');
-            location.reload(); // Recargar limpia el estado
+            location.reload();
         }
 
-        // --- CARGA Y EDICIÓN DE PERFIL ---
         function cargarPerfilUsuario(userKey) {
-            const nombre = localStorage.getItem(`znet_user_${userKey}`);
+            const nombre = localStorage.getItem(`znet_user_${userKey}`) || "Usuario";
             const foto = localStorage.getItem(`znet_pic_${userKey}`);
             const bio = localStorage.getItem(`znet_bio_${userKey}`) || "Vlogger & Fashion Lover";
 
             document.getElementById('display-username').textContent = nombre;
             document.getElementById('display-bio').textContent = bio;
-            document.getElementById('foto-avatar').src = foto;
+            
+            if (foto) {
+                document.getElementById('foto-avatar').src = foto;
+            }
 
-            // Cargar Galería
             for(let i = 1; i <= 6; i++) {
                 const imgGuardada = localStorage.getItem(`znet_gallery_${userKey}_${i}`);
                 const imgElement = document.getElementById(`gallery-img-${i}`);
@@ -279,10 +302,15 @@
 
         function abrirModalEdicion() {
             const userKey = localStorage.getItem('znet_sesion_activa');
-            document.getElementById('edit-name').value = localStorage.getItem(`znet_user_${userKey}`);
-            document.getElementById('edit-bio').value = localStorage.getItem(`znet_bio_${userKey}`);
-            document.getElementById('edit-avatar-img').src = localStorage.getItem(`znet_pic_${userKey}`);
-            fotoTemporalBase64 = localStorage.getItem(`znet_pic_${userKey}`);
+            document.getElementById('edit-name').value = localStorage.getItem(`znet_user_${userKey}`) || "";
+            document.getElementById('edit-bio').value = localStorage.getItem(`znet_bio_${userKey}`) || "";
+            
+            const fotoActual = localStorage.getItem(`znet_pic_${userKey}`);
+            if(fotoActual) {
+                document.getElementById('edit-avatar-img').src = fotoActual;
+                fotoTemporalBase64 = fotoActual;
+            }
+            
             document.getElementById('modal-edicion').classList.remove('hidden');
         }
 
@@ -295,36 +323,60 @@
             const nuevoNombre = document.getElementById('edit-name').value.trim();
             const nuevaBio = document.getElementById('edit-bio').value.trim();
 
+            if (!nuevoNombre) { alert("El nombre de usuario no puede estar vacío."); return; }
+
             localStorage.setItem(`znet_user_${userKey}`, nuevoNombre);
             localStorage.setItem(`znet_bio_${userKey}`, nuevaBio);
-            localStorage.setItem(`znet_pic_${userKey}`, fotoTemporalBase64);
+            if(fotoTemporalBase64) {
+                localStorage.setItem(`znet_pic_${userKey}`, fotoTemporalBase64);
+            }
 
             cargarPerfilUsuario(userKey);
             cerrarModalEdicion();
         }
 
-        // --- GALERÍA INTERACTIVA ---
         function triggerSubidaGaleria(id) {
             idGaleriaActual = id;
             document.getElementById('input-gallery').click();
         }
 
-        function procesarSubidaGaleria(event) {
+        function procesarImagenGaleria(event) {
             const archivo = event.target.files[0];
-            if (archivo) {
-                const leerArchivo = new FileReader();
-                leerArchivo.onload = function(e) {
-                    const base64Img = e.target.result;
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 600;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    } else {
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const base64Img = canvas.toDataURL('image/jpeg', 0.82);
                     const userKey = localStorage.getItem('znet_sesion_activa');
                     
-                    // Guardar en LS y actualizar UI
                     localStorage.setItem(`znet_gallery_${userKey}_${idGaleriaActual}`, base64Img);
                     const imgElement = document.getElementById(`gallery-img-${idGaleriaActual}`);
-                    imgElement.src = base64Img;
-                    imgElement.style.display = 'block';
+                    if(imgElement) {
+                        imgElement.src = base64Img;
+                        imgElement.style.display = 'block';
+                    }
                 }
-                leerArchivo.readAsDataURL(archivo);
+                img.src = e.target.result;
             }
+            lector.readAsDataURL(archivo);
         }
     </script>
 </body>
