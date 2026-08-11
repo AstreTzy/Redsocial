@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-NET: Perfil Social Estilo Pro</title>
+    <title>Z-NET: Perfil con Tienda y Trofeos</title>
     <link rel="stylesheet" href="perfil.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -61,7 +61,6 @@
     <!-- PANTALLA PRINCIPAL -->
     <div id="main-profile-screen" class="hidden">
         
-        <!-- Franja superior diagonal oscura restaurada -->
         <div class="profile-diagonal-bg">
             <div class="social-content-wrapper">
                 <div class="social-top-bar">
@@ -78,9 +77,11 @@
 
         <div class="social-content-wrapper profile-main-content">
             <div class="social-profile-header">
-                <div class="social-avatar-container">
+                <!-- Contenedor del Avatar con Marco Dinámico -->
+                <div class="social-avatar-container" id="avatar-container-wrapper" onclick="abrirModalMarcos()" title="Click para abrir Tienda de Marcos y Trofeos">
                     <img src="" id="foto-avatar" class="social-avatar-img" alt="Avatar">
                     <span class="social-verified-badge"><i class="fas fa-check"></i></span>
+                    <div class="marco-badge-hint"><i class="fas fa-store"></i></div>
                 </div>
                 
                 <h1 class="social-profile-name" id="display-username">Nombre</h1>
@@ -88,7 +89,7 @@
 
                 <div class="social-action-buttons">
                     <button class="btn-social-outline" onclick="abrirModalEdicion()">EDIT PROFILE</button>
-                    <button class="btn-social-solid">FOLLOW</button>
+                    <button class="btn-social-solid" onclick="abrirModalMarcos()">TIENDA / MARCOS</button>
                 </div>
 
                 <div class="social-stats-row">
@@ -105,7 +106,7 @@
                 <button class="social-tab-item">ABOUT</button>
             </div>
 
-            <!-- Galería estilo Pinterest con alturas variables -->
+            <!-- Galería -->
             <div class="social-photos-grid">
                 <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(1)"><img id="gallery-img-1" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
                 <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(2)"><img id="gallery-img-2" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
@@ -119,7 +120,47 @@
         </div>
     </div>
 
-    <!-- Modal Editar -->
+    <!-- MODAL DE TIENDA Y TROFEOS DE MARCOS -->
+    <div id="modal-marcos" class="modal-overlay hidden">
+        <div class="modal-content shop-modal">
+            <h3>Tienda y Trofeos</h3>
+            <p class="modal-subtitle">Desbloquea logros subiendo fotos o equípate marcos exclusivos.</p>
+            
+            <div class="marcos-grid">
+                <!-- Marco Clásico -->
+                <div class="marco-card" onclick="equiparMarco('default')">
+                    <div class="preview-ring marco-default"><div class="preview-avatar-inner"></div></div>
+                    <span class="marco-title">Clásico</span>
+                    <span class="marco-status unlocked">Equipado por defecto</span>
+                </div>
+
+                <!-- Marco Trofeo: Rey Dorado (Se desbloquea con 3 fotos en galería) -->
+                <div class="marco-card" onclick="verificarLogroTrofeoOro()">
+                    <div class="preview-ring marco-oro" id="card-oro"><div class="preview-avatar-inner"></div></div>
+                    <span class="marco-title">Rey Dorado</span>
+                    <span class="marco-status" id="status-oro">Trofeo: Sube 3 fotos</span>
+                </div>
+
+                <!-- Marco Tienda: Neón Pro -->
+                <div class="marco-card" onclick="equiparMarco('neon')">
+                    <div class="preview-ring marco-neon"><div class="preview-avatar-inner"></div></div>
+                    <span class="marco-title">Neón Cyber</span>
+                    <span class="marco-status unlocked">Disponible Tienda</span>
+                </div>
+
+                <!-- Marco Trofeo: Diamante Élite (Se desbloquea con las 6 fotos llenas) -->
+                <div class="marco-card" onclick="verificarLogroTrofeoDiamante()">
+                    <div class="preview-ring marco-diamante" id="card-diamante"><div class="preview-avatar-inner"></div></div>
+                    <span class="marco-title">Diamante Élite</span>
+                    <span class="marco-status" id="status-diamante">Trofeo: Llena las 6 fotos</span>
+                </div>
+            </div>
+
+            <button class="btn-social-outline" onclick="cerrarModalMarcos()" style="margin-top: 20px; width:100%;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Editar Perfil -->
     <div id="modal-edicion" class="modal-overlay hidden">
         <div class="modal-content">
             <h3>Editar Perfil</h3>
@@ -128,7 +169,7 @@
             </div>
             <input type="file" id="edit-selector-foto" accept="image/*" style="display: none;" onchange="procesarImagenSeleccionada(event, 'edit-avatar-img', null)">
             
-            <div class="input-group">
+            <div class="input-group" style="margin-top: 15px;">
                 <label>Nombre a mostrar</label>
                 <input type="text" id="edit-name">
             </div>
@@ -197,15 +238,14 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 400;
-                    const MAX_HEIGHT = 400;
+                    const MAX_SIZE = 400;
                     let width = img.width;
                     let height = img.height;
 
                     if (width > height) {
-                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
                     } else {
-                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
                     }
 
                     canvas.width = width;
@@ -213,7 +253,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    fotoTemporalBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                    fotoTemporalBase64 = canvas.toDataURL('image/jpeg', 0.85);
 
                     if(boxId) {
                         const box = document.getElementById(boxId);
@@ -242,6 +282,7 @@
             localStorage.setItem(`znet_pass_${key}`, contrasena);
             localStorage.setItem(`znet_pic_${key}`, fotoTemporalBase64);
             localStorage.setItem(`znet_bio_${key}`, "Vlogger & Fashion Lover");
+            localStorage.setItem(`znet_marco_${key}`, "default");
 
             localStorage.setItem('znet_sesion_activa', key);
             cargarPerfilUsuario(key);
@@ -271,6 +312,7 @@
             const nombre = localStorage.getItem(`znet_user_${userKey}`) || "Usuario";
             const foto = localStorage.getItem(`znet_pic_${userKey}`);
             const bio = localStorage.getItem(`znet_bio_${userKey}`) || "Vlogger & Fashion Lover";
+            const marcoActivo = localStorage.getItem(`znet_marco_${userKey}`) || "default";
 
             document.getElementById('display-username').textContent = nombre;
             document.getElementById('display-bio').textContent = bio;
@@ -278,6 +320,8 @@
             if (foto) {
                 document.getElementById('foto-avatar').src = foto;
             }
+
+            aplicarMarcoVisual(marcoActivo);
 
             for(let i = 1; i <= 6; i++) {
                 const imgGuardada = localStorage.getItem(`znet_gallery_${userKey}_${i}`);
@@ -300,6 +344,86 @@
             cambiarPestaña('login');
         }
 
+        /* --- LÓGICA DE MARCOS Y TROFEOS --- */
+        function abrirModalMarcos() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            
+            // Evaluar progreso para los trofeos en tiempo real dentro del modal
+            let postsCount = 0;
+            for(let i = 1; i <= 6; i++) {
+                if(localStorage.getItem(`znet_gallery_${userKey}_${i}`)) postsCount++;
+            }
+
+            const statusOro = document.getElementById('status-oro');
+            if (postsCount >= 3) {
+                statusOro.textContent = "¡Desbloqueado! Click para equipar";
+                statusOro.style.color = "#27ae60";
+            } else {
+                statusOro.textContent = `Progreso: ${postsCount}/3 fotos`;
+                statusOro.style.color = "var(--text-muted)";
+            }
+
+            const statusDiamante = document.getElementById('status-diamante');
+            if (postsCount >= 6) {
+                statusDiamante.textContent = "¡Desbloqueado! Click para equipar";
+                statusDiamante.style.color = "#27ae60";
+            } else {
+                statusDiamante.textContent = `Progreso: ${postsCount}/6 fotos`;
+                statusDiamante.style.color = "var(--text-muted)";
+            }
+
+            document.getElementById('modal-marcos').classList.remove('hidden');
+        }
+
+        function cerrarModalMarcos() {
+            document.getElementById('modal-marcos').classList.add('hidden');
+        }
+
+        function equiparMarco(nombreMarco) {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            localStorage.setItem(`znet_marco_${userKey}`, nombreMarco);
+            aplicarMarcoVisual(nombreMarco);
+            cerrarModalMarcos();
+        }
+
+        function verificarLogroTrofeoOro() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            let postsCount = 0;
+            for(let i = 1; i <= 6; i++) {
+                if(localStorage.getItem(`znet_gallery_${userKey}_${i}`)) postsCount++;
+            }
+
+            if (postsCount >= 3) {
+                equiparMarco('oro');
+            } else {
+                alert(`Te faltan subir fotos a la galería. Llevas ${postsCount}/3 para reclamar este trofeo.`);
+            }
+        }
+
+        function verificarLogroTrofeoDiamante() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            let postsCount = 0;
+            for(let i = 1; i <= 6; i++) {
+                if(localStorage.getItem(`znet_gallery_${userKey}_${i}`)) postsCount++;
+            }
+
+            if (postsCount >= 6) {
+                equiparMarco('diamante');
+            } else {
+                alert(`Debes completar los 6 espacios de la galería. Llevas ${postsCount}/6 fotos.`);
+            }
+        }
+
+        function aplicarMarcoVisual(nombreMarco) {
+            const wrapper = document.getElementById('avatar-container-wrapper');
+            // Limpiar marcos anteriores
+            wrapper.className = "social-avatar-container";
+            if(nombreMarco && nombreMarco !== 'default') {
+                wrapper.classList.add(`marco-${nombreMarco}`);
+            }
+        }
+
+        /* --- EDICIÓN DE PERFIL --- */
         function abrirModalEdicion() {
             const userKey = localStorage.getItem('znet_sesion_activa');
             document.getElementById('edit-name').value = localStorage.getItem(`znet_user_${userKey}`) || "";
@@ -323,7 +447,7 @@
             const nuevoNombre = document.getElementById('edit-name').value.trim();
             const nuevaBio = document.getElementById('edit-bio').value.trim();
 
-            if (!nuevoNombre) { alert("El nombre de usuario no puede estar vacío."); return; }
+            if (!nuevoNombre) { alert("El nombre no puede estar vacío."); return; }
 
             localStorage.setItem(`znet_user_${userKey}`, nuevoNombre);
             localStorage.setItem(`znet_bio_${userKey}`, nuevaBio);
@@ -349,7 +473,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_SIZE = 600;
+                    const MAX_SIZE = 800;
                     let width = img.width;
                     let height = img.height;
 
@@ -364,7 +488,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const base64Img = canvas.toDataURL('image/jpeg', 0.82);
+                    const base64Img = canvas.toDataURL('image/jpeg', 0.85);
                     const userKey = localStorage.getItem('znet_sesion_activa');
                     
                     localStorage.setItem(`znet_gallery_${userKey}_${idGaleriaActual}`, base64Img);
