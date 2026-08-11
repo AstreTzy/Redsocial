@@ -12,6 +12,80 @@
 
     <div class="profile-container">
 
+        <!-- VENTANA FLOTANTE / MODAL DE PERFIL DETALLADO -->
+<div id="profile-modal" class="modal-overlay hidden" onclick="cerrarModalPerfil(event)">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+        
+        <!-- Barra superior del modal con la línea de arrastre -->
+        <div class="modal-handle-bar">
+            <div class="modal-drag-indicator"></div>
+            <button class="modal-close-icon" onclick="cerrarModalPerfilDirecto()"><i class="fas fa-undo-alt"></i></button>
+        </div>
+
+        <!-- Contenido de la tarjeta flotante -->
+        <div class="modal-user-info-large">
+            <h2 class="modal-title">Oliver<br>Bennet</h2>
+            <p class="modal-handle">@oliver_bennent</p>
+            <div class="modal-badge-row">
+                <div class="modal-neon-badge"><i class="fas fa-star"></i></div>
+                <div class="modal-icon-badge"><i class="fas fa-envelope"></i></div>
+            </div>
+        </div>
+
+        <p class="modal-bio">
+            Designers focused on creating impactful, user-cantered digital experiences and branding.
+        </p>
+
+        <!-- Estadísticas del modal -->
+        <div class="modal-stats-grid">
+            <div class="modal-stat">
+                <span class="modal-stat-num">521</span>
+                <span class="modal-stat-label">Followers</span>
+            </div>
+            <div class="modal-stat">
+                <span class="modal-stat-num">345</span>
+                <span class="modal-stat-label">Following</span>
+            </div>
+            <div class="modal-stat">
+                <span class="modal-stat-num">566</span>
+                <span class="modal-stat-label">Creations</span>
+            </div>
+        </div>
+
+        <!-- Etiquetas de intereses -->
+        <div class="modal-tags-row">
+            <span class="modal-tag">@bookreader</span>
+            <span class="modal-tag">@foodiee</span>
+            <span class="modal-tag">@traveler</span>
+            <span class="modal-tag">@hiker</span>
+            <span class="modal-tag">@designer</span>
+        </div>
+
+        <!-- Carrusel de fotos miniaturas -->
+        <div class="modal-photos-carousel">
+            <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300" alt="Post"></div>
+            <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" alt="Post"></div>
+            <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300" alt="Post"></div>
+        </div>
+        
+        <div class="modal-carousel-arrows">
+            <button class="arrow-btn"><i class="fas fa-arrow-left"></i></button>
+            <button class="arrow-btn"><i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <!-- Comentario o reseña inferior -->
+        <div class="modal-review-card">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="User">
+            <div class="modal-review-text">
+                <p>Thanks for the great recipe recommendation for this greek salad. Had so much fun making it with my family. Greetings from USA!</p>
+                <span class="modal-review-author">Elena Juni<br><b>@elena.juni</b></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
         <!-- PANTALLA DE ACCESO (LOGIN / REGISTRO) -->
         <div class="auth-card" id="auth-screen">
             <div class="auth-logo">Z·NET<span>.</span></div>
