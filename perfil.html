@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-NET: Perfil Social</title>
-    
-    <!-- Enlace al archivo CSS separado -->
+    <title>Z-NET: Perfil Social Estilo Pro</title>
     <link rel="stylesheet" href="perfil.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <div class="profile-container">
+    <!-- Pantalla de carga para evitar parpadeos -->
+    <div id="loading-screen" class="loading-screen">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
 
-        <!-- PANTALLA DE ACCESO (LOGIN Y REGISTRO) -->
-        <div class="auth-card" id="auth-screen">
+    <!-- PANTALLA DE ACCESO (LOGIN Y REGISTRO) -->
+    <div class="profile-container hidden" id="auth-container">
+        <div class="auth-card">
             <div class="auth-logo">Z·NET<span class="neon-dot">.</span></div>
             
             <div class="auth-tabs">
@@ -45,7 +46,7 @@
                     </div>
                     <img id="reg-avatar-img" class="hidden" alt="Vista previa">
                 </div>
-                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFotoRegistro(event)">
+                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFoto(event, 'reg-avatar-img', 'avatar-preview-box')">
 
                 <div class="input-group">
                     <label><i class="fas fa-user-plus"></i> Crear Usuario</label>
@@ -55,21 +56,26 @@
                     <label><i class="fas fa-lock"></i> Crear Contraseña</label>
                     <input type="password" id="reg-pass" placeholder="Contraseña segura">
                 </div>
-                <button class="btn-auth-submit" onclick="procesarRegistro()">Crear Cuenta y Entrar</button>
+                <button class="btn-auth-submit" onclick="procesarRegistro()">Crear Cuenta</button>
             </div>
         </div>
+    </div>
 
-        <!-- PANTALLA PRINCIPAL DE PERFIL (Estilo Red Social) -->
-        <div id="main-profile-screen" class="hidden">
-            
+    <!-- PANTALLA PRINCIPAL DE PERFIL -->
+    <div id="main-profile-screen" class="hidden">
+        
+        <!-- Fondo superior diagonal oscuro -->
+        <div class="profile-diagonal-bg"></div>
+
+        <div class="social-content-wrapper">
             <!-- Barra Superior -->
             <div class="social-top-bar">
-                <button class="btn-icon-back" onclick="cerrarSesion()" title="Cerrar Sesión">
+                <button class="btn-icon-top" onclick="cerrarSesion()" title="Cerrar Sesión">
                     <i class="fas fa-arrow-left"></i>
                 </button>
                 <span class="social-top-title">Profile</span>
-                <button class="btn-icon-options">
-                    <i class="fas fa-ellipsis-v"></i>
+                <button class="btn-icon-top" onclick="alternarTema()" title="Cambiar Tema">
+                    <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
             </div>
 
@@ -80,33 +86,24 @@
                     <span class="social-verified-badge"><i class="fas fa-check"></i></span>
                 </div>
                 
-                <h1 class="social-profile-name" id="display-card-username">Nombre</h1>
-                <p class="social-profile-bio">Vlogger & Fashion Lover</p>
+                <h1 class="social-profile-name" id="display-username">Nombre</h1>
+                <p class="social-profile-bio" id="display-bio">Vlogger & Fashion Lover</p>
 
                 <!-- Botones de Acción -->
                 <div class="social-action-buttons">
-                    <button class="btn-social-outline">MESSAGE</button>
+                    <button class="btn-social-outline" onclick="abrirModalEdicion()">EDIT PROFILE</button>
                     <button class="btn-social-solid">FOLLOW</button>
                 </div>
 
                 <!-- Estadísticas -->
                 <div class="social-stats-row">
-                    <div class="stat-box">
-                        <span class="stat-number">252k</span>
-                        <span class="stat-label">Followers</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number">378</span>
-                        <span class="stat-label">Following</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number">115</span>
-                        <span class="stat-label">Posts</span>
-                    </div>
+                    <div class="stat-box"><span class="stat-number">252k</span><span class="stat-label">Followers</span></div>
+                    <div class="stat-box"><span class="stat-number">378</span><span class="stat-label">Following</span></div>
+                    <div class="stat-box"><span class="stat-number">115</span><span class="stat-label">Posts</span></div>
                 </div>
             </div>
 
-            <!-- Pestañas de Contenido (Photos, Videos, etc.) -->
+            <!-- Pestañas de Contenido -->
             <div class="social-tabs-nav">
                 <button class="social-tab-item active">PHOTOS</button>
                 <button class="social-tab-item">VIDEOS</button>
@@ -114,59 +111,98 @@
                 <button class="social-tab-item">ABOUT</button>
             </div>
 
-            <!-- Cuadrícula de Fotos (Galería estilo Pinterest) -->
+            <!-- Cuadrícula de Fotos (Galería interactiva) -->
             <div class="social-photos-grid">
-                <div class="grid-photo-item" id="gallery-slot-1">
-                    <img src="" class="gallery-dynamic-img" alt="Post">
-                </div>
-                <div class="grid-photo-item">
-                    <div class="placeholder-grid-bg"></div>
-                </div>
-                <div class="grid-photo-item">
-                    <div class="placeholder-grid-bg"></div>
-                </div>
-                <div class="grid-photo-item">
-                    <div class="placeholder-grid-bg"></div>
-                </div>
+                <!-- Se generan dinámicamente con JS -->
+                <div class="grid-photo-item" onclick="triggerSubidaGaleria(1)"><img id="gallery-img-1" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item" onclick="triggerSubidaGaleria(2)"><img id="gallery-img-2" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item" onclick="triggerSubidaGaleria(3)"><img id="gallery-img-3" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item" onclick="triggerSubidaGaleria(4)"><img id="gallery-img-4" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item" onclick="triggerSubidaGaleria(5)"><img id="gallery-img-5" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item" onclick="triggerSubidaGaleria(6)"><img id="gallery-img-6" src="" alt="Cargar foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
             </div>
+            
+            <!-- Input oculto para galería -->
+            <input type="file" id="input-gallery" accept="image/*" style="display: none;" onchange="procesarSubidaGaleria(event)">
+        </div>
+    </div>
 
+    <!-- Modal Editar Perfil -->
+    <div id="modal-edicion" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Editar Perfil</h3>
+            <div class="register-avatar-upload" onclick="document.getElementById('edit-selector-foto').click()">
+                <img id="edit-avatar-img" src="" alt="Vista previa">
+            </div>
+            <input type="file" id="edit-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFoto(event, 'edit-avatar-img', null)">
+            
+            <div class="input-group">
+                <label>Nombre a mostrar</label>
+                <input type="text" id="edit-name">
+            </div>
+            <div class="input-group">
+                <label>Biografía</label>
+                <input type="text" id="edit-bio">
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-social-outline" onclick="cerrarModalEdicion()">Cancelar</button>
+                <button class="btn-social-solid" onclick="guardarEdicion()">Guardar</button>
+            </div>
         </div>
     </div>
 
     <script>
         let fotoTemporalBase64 = "";
+        let idGaleriaActual = 0;
 
         window.onload = function() {
-            const usuarioActivo = localStorage.getItem('znet_sesion_activa');
-            if (usuarioActivo) {
-                cargarPerfilUsuario(usuarioActivo);
+            // Aplicar tema guardado
+            if(localStorage.getItem('znet_theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+            }
+
+            // Verificar sesión simulando pequeña carga (evita parpadeo)
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                const usuarioActivo = localStorage.getItem('znet_sesion_activa');
+                if (usuarioActivo) cargarPerfilUsuario(usuarioActivo);
+                else mostrarPantallaAcceso();
+            }, 500);
+        }
+
+        // --- SISTEMA DE TEMA ---
+        function alternarTema() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('znet_theme', 'dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
             } else {
-                mostrarPantallaAcceso();
+                localStorage.setItem('znet_theme', 'light');
+                icon.classList.replace('fa-sun', 'fa-moon');
             }
         }
 
+        // --- PESTAÑAS Y PREVISUALIZACIÓN ---
         function cambiarPestaña(tipo) {
-            if (tipo === 'login') {
-                document.getElementById('tab-login').classList.add('active');
-                document.getElementById('tab-register').classList.remove('active');
-                document.getElementById('form-login').classList.remove('hidden');
-                document.getElementById('form-register').classList.add('hidden');
-            } else {
-                document.getElementById('tab-register').classList.add('active');
-                document.getElementById('tab-login').classList.remove('active');
-                document.getElementById('form-register').classList.remove('hidden');
-                document.getElementById('form-login').classList.add('hidden');
-            }
+            document.getElementById('tab-login').classList.toggle('active', tipo === 'login');
+            document.getElementById('tab-register').classList.toggle('active', tipo === 'register');
+            document.getElementById('form-login').classList.toggle('hidden', tipo !== 'login');
+            document.getElementById('form-register').classList.toggle('hidden', tipo !== 'register');
         }
 
-        function previsualizarFotoRegistro(event) {
+        function previsualizarFoto(event, imgId, boxId) {
             const archivo = event.target.files[0];
             if (archivo) {
                 const leerArchivo = new FileReader();
                 leerArchivo.onload = function(e) {
                     fotoTemporalBase64 = e.target.result;
-                    document.getElementById('avatar-preview-box').classList.add('hidden');
-                    const img = document.getElementById('reg-avatar-img');
+                    if(boxId) document.getElementById(boxId).classList.add('hidden');
+                    const img = document.getElementById(imgId);
                     img.src = fotoTemporalBase64;
                     img.classList.remove('hidden');
                 }
@@ -174,35 +210,29 @@
             }
         }
 
+        // --- AUTENTICACIÓN ---
         function procesarRegistro() {
             const usuario = document.getElementById('reg-user').value.trim();
             const contrasena = document.getElementById('reg-pass').value.trim();
             
-            if (!usuario || !contrasena) {
-                alert("Por favor, llena todos los campos de texto.");
-                return;
-            }
-            if (!fotoTemporalBase64) {
-                alert("¡No olvides subir tu foto de perfil!");
-                return;
-            }
+            if (!usuario || !contrasena) return alert("Llena todos los campos.");
+            if (!fotoTemporalBase64) return alert("Sube tu foto de perfil.");
 
-            localStorage.setItem(`znet_user_${usuario.toLowerCase()}`, usuario);
-            localStorage.setItem(`znet_pass_${usuario.toLowerCase()}`, contrasena);
-            localStorage.setItem(`znet_pic_${usuario.toLowerCase()}`, fotoTemporalBase64);
+            const key = usuario.toLowerCase();
+            localStorage.setItem(`znet_user_${key}`, usuario);
+            localStorage.setItem(`znet_pass_${key}`, contrasena);
+            localStorage.setItem(`znet_pic_${key}`, fotoTemporalBase64);
+            localStorage.setItem(`znet_bio_${key}`, "Vlogger & Fashion Lover"); // Bio por defecto
 
-            localStorage.setItem('znet_sesion_activa', usuario.toLowerCase());
-            cargarPerfilUsuario(usuario.toLowerCase());
+            localStorage.setItem('znet_sesion_activa', key);
+            cargarPerfilUsuario(key);
         }
 
         function procesarLogin() {
             const usuario = document.getElementById('login-user').value.trim().toLowerCase();
             const contrasena = document.getElementById('login-pass').value.trim();
 
-            const registroExiste = localStorage.getItem(`znet_user_${usuario}`);
-            const contrasenaCorrecta = localStorage.getItem(`znet_pass_${usuario}`);
-
-            if (registroExiste && contrasenaCorrecta === contrasena) {
+            if (localStorage.getItem(`znet_pass_${usuario}`) === contrasena) {
                 localStorage.setItem('znet_sesion_activa', usuario);
                 cargarPerfilUsuario(usuario);
             } else {
@@ -210,38 +240,91 @@
             }
         }
 
-        function cargarPerfilUsuario(userKey) {
-            const nombreReal = localStorage.getItem(`znet_user_${userKey}`);
-            const fotoPerfil = localStorage.getItem(`znet_pic_${userKey}`);
-
-            document.getElementById('display-card-username').textContent = nombreReal;
-            document.getElementById('foto-avatar').src = fotoPerfil;
-            document.querySelectorAll('.gallery-dynamic-img').forEach(img => {
-                img.src = fotoPerfil;
-            });
-
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('main-profile-screen').classList.remove('hidden');
-        }
-
         function cerrarSesion() {
             localStorage.removeItem('znet_sesion_activa');
-            
-            document.getElementById('login-user').value = "";
-            document.getElementById('login-pass').value = "";
-            document.getElementById('reg-user').value = "";
-            document.getElementById('reg-pass').value = "";
-            document.getElementById('reg-avatar-img').classList.add('hidden');
-            document.getElementById('avatar-preview-box').classList.remove('hidden');
-            fotoTemporalBase64 = "";
+            location.reload(); // Recargar limpia el estado
+        }
 
-            mostrarPantallaAcceso();
+        // --- CARGA Y EDICIÓN DE PERFIL ---
+        function cargarPerfilUsuario(userKey) {
+            const nombre = localStorage.getItem(`znet_user_${userKey}`);
+            const foto = localStorage.getItem(`znet_pic_${userKey}`);
+            const bio = localStorage.getItem(`znet_bio_${userKey}`) || "Vlogger & Fashion Lover";
+
+            document.getElementById('display-username').textContent = nombre;
+            document.getElementById('display-bio').textContent = bio;
+            document.getElementById('foto-avatar').src = foto;
+
+            // Cargar Galería
+            for(let i = 1; i <= 6; i++) {
+                const imgGuardada = localStorage.getItem(`znet_gallery_${userKey}_${i}`);
+                const imgElement = document.getElementById(`gallery-img-${i}`);
+                if(imgGuardada) {
+                    imgElement.src = imgGuardada;
+                    imgElement.style.display = 'block';
+                } else {
+                    imgElement.style.display = 'none';
+                }
+            }
+
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('main-profile-screen').classList.remove('hidden');
         }
 
         function mostrarPantallaAcceso() {
             document.getElementById('main-profile-screen').classList.add('hidden');
-            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('auth-container').classList.remove('hidden');
             cambiarPestaña('login');
+        }
+
+        function abrirModalEdicion() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            document.getElementById('edit-name').value = localStorage.getItem(`znet_user_${userKey}`);
+            document.getElementById('edit-bio').value = localStorage.getItem(`znet_bio_${userKey}`);
+            document.getElementById('edit-avatar-img').src = localStorage.getItem(`znet_pic_${userKey}`);
+            fotoTemporalBase64 = localStorage.getItem(`znet_pic_${userKey}`);
+            document.getElementById('modal-edicion').classList.remove('hidden');
+        }
+
+        function cerrarModalEdicion() {
+            document.getElementById('modal-edicion').classList.add('hidden');
+        }
+
+        function guardarEdicion() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            const nuevoNombre = document.getElementById('edit-name').value.trim();
+            const nuevaBio = document.getElementById('edit-bio').value.trim();
+
+            localStorage.setItem(`znet_user_${userKey}`, nuevoNombre);
+            localStorage.setItem(`znet_bio_${userKey}`, nuevaBio);
+            localStorage.setItem(`znet_pic_${userKey}`, fotoTemporalBase64);
+
+            cargarPerfilUsuario(userKey);
+            cerrarModalEdicion();
+        }
+
+        // --- GALERÍA INTERACTIVA ---
+        function triggerSubidaGaleria(id) {
+            idGaleriaActual = id;
+            document.getElementById('input-gallery').click();
+        }
+
+        function procesarSubidaGaleria(event) {
+            const archivo = event.target.files[0];
+            if (archivo) {
+                const leerArchivo = new FileReader();
+                leerArchivo.onload = function(e) {
+                    const base64Img = e.target.result;
+                    const userKey = localStorage.getItem('znet_sesion_activa');
+                    
+                    // Guardar en LS y actualizar UI
+                    localStorage.setItem(`znet_gallery_${userKey}_${idGaleriaActual}`, base64Img);
+                    const imgElement = document.getElementById(`gallery-img-${idGaleriaActual}`);
+                    imgElement.src = base64Img;
+                    imgElement.style.display = 'block';
+                }
+                leerArchivo.readAsDataURL(archivo);
+            }
         }
     </script>
 </body>
