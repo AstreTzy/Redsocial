@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-NET: Perfil Moderno</title>
+    <title>Z-NET: Perfil</title>
     
     <link rel="stylesheet" href="perfil.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <!-- PANTALLA DE PERFIL PRINCIPAL (IDÉNTICA A LA UI DE REFERENCIA) -->
+        <!-- PANTALLA DE PERFIL PRINCIPAL (IDÉNTICA A LA SEGUNDA IMAGEN) -->
         <div id="main-profile-screen" class="hidden">
             
             <div class="profile-top-bar">
@@ -67,21 +67,34 @@
                 </button>
             </div>
 
-            <!-- HERO CARD (FOTO GRANDE INMERSIVA + ESTADÍSTICAS) -->
-            <div class="profile-hero">
-                <img src="" id="foto-avatar" class="profile-hero-img" alt="Avatar">
-                
-                <button class="floating-action-pill">
-                    <i class="fas fa-heart"></i>
-                </button>
-
-                <div class="profile-hero-overlay">
-                    <h1 class="profile-user-title" id="display-header-username">Usuario</h1>
-                    <div class="profile-stats-row">
-                        <span><strong>1,615</strong> Followers</span>
-                        <span><strong>12,412</strong> Likes</span>
-                        <span><strong>300</strong> Photos</span>
+            <!-- CABECERA DEL PERFIL (AVATAR CIRCULAR + NOMBRE + BOTONES) -->
+            <div class="profile-header-card">
+                <div class="profile-avatar-wrapper">
+                    <img src="" id="foto-avatar" alt="Avatar">
+                </div>
+                <div class="profile-user-info">
+                    <h1 class="profile-name" id="display-header-username">Usuario</h1>
+                    <div class="profile-actions-row">
+                        <button class="btn-following">Following</button>
+                        <button class="btn-icon-action"><i class="fas fa-plus"></i></button>
+                        <button class="btn-icon-action"><i class="fas fa-gift"></i></button>
                     </div>
+                </div>
+            </div>
+
+            <!-- ESTADÍSTICAS -->
+            <div class="profile-stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">1,615</span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12,412</span>
+                    <span class="stat-label">Likes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">300</span>
+                    <span class="stat-label">Photos</span>
                 </div>
             </div>
 
