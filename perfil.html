@@ -3,103 +3,600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-NET | Mercado de Marcos</title>
+    <title>Z-NET | Perfil y Mercado de Marcos</title>
     <link rel="stylesheet" href="perfil.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <div id="main-profile-screen" class="profile-container">
-        <div class="social-profile-header">
-            <!-- Contenedor del Avatar + Marco -->
-            <div class="social-avatar-container" id="avatar-container-wrapper">
-                <img src="" id="foto-avatar" class="social-avatar-img" alt="Avatar">
-                <!-- Capa del marco que se inyecta dinámicamente -->
-                <div id="div-marco-custom" class="avatar-marco-dinamico"></div>
-            </div>
+    <div id="loading-screen" class="loading-screen">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+
+    <!-- PANTALLA DE ACCESO (LOGIN / REGISTRO) -->
+    <div class="profile-container hidden" id="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">Z·NET<span class="neon-dot">.</span></div>
             
-            <h1 id="display-username">Usuario</h1>
-            <button class="btn-mercado" onclick="abrirMercado()">TIENDA DE MARCOS</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="cambiarPestañaAuth('login')">Entrar</button>
+                <button class="auth-tab" id="tab-register" onclick="cambiarPestañaAuth('register')">Registrarse</button>
+            </div>
+
+            <div id="form-login" class="auth-form-container">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <input type="text" id="login-user" placeholder="Tu nombre de usuario">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                </div>
+                <button class="btn-auth-submit" onclick="procesarLogin()">Iniciar Sesión</button>
+            </div>
+
+            <div id="form-register" class="auth-form-container hidden">
+                <div class="register-avatar-upload" onclick="document.getElementById('reg-selector-foto').click()">
+                    <div class="avatar-preview-placeholder" id="avatar-preview-box">
+                        <i class="fas fa-camera"></i>
+                        <span>Subir Foto</span>
+                    </div>
+                    <img id="reg-avatar-img" class="hidden" alt="Vista previa">
+                </div>
+                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="procesarImagenSeleccionada(event, 'reg-avatar-img', 'avatar-preview-box')">
+
+                <div class="input-group">
+                    <label><i class="fas fa-user-plus"></i> Crear Usuario</label>
+                    <input type="text" id="reg-user" placeholder="Ej: Helsie">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Crear Contraseña</label>
+                    <input type="password" id="reg-pass" placeholder="Contraseña segura">
+                </div>
+                <button class="btn-auth-submit" onclick="procesarRegistro()">Crear Cuenta</button>
+            </div>
         </div>
     </div>
 
-    <!-- MODAL MERCADO INTEGRADO -->
-    <div id="modal-mercado" class="modal-overlay hidden">
+    <!-- PANTALLA PRINCIPAL DEL PERFIL -->
+    <div id="main-profile-screen" class="hidden">
+        
+        <div class="profile-diagonal-bg">
+            <div class="social-content-wrapper">
+                <div class="social-top-bar">
+                    <button class="btn-icon-top" onclick="cerrarSesion()" title="Cerrar Sesión">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <span class="social-top-title">Z-NET Profile</span>
+                    <button class="btn-icon-top" onclick="alternarTema()" title="Cambiar Tema">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-content-wrapper profile-main-content">
+            <div class="social-profile-header">
+                <!-- Contenedor del Avatar con Marco Dinámico -->
+                <div class="social-avatar-container" id="avatar-container-wrapper" onclick="abrirModalMarcos()" title="Click para abrir Tienda de Marcos y Trofeos">
+                    <img src="" id="foto-avatar" class="social-avatar-img" alt="Avatar">
+                    <span class="social-verified-badge"><i class="fas fa-check"></i></span>
+                    <div class="marco-badge-hint"><i class="fas fa-store"></i></div>
+                    <!-- Capa del marco flotante (personalizado o de tienda) -->
+                    <div id="div-marco-custom" class="avatar-marco-dinamico"></div>
+                </div>
+                
+                <h1 class="social-profile-name" id="display-username">Nombre</h1>
+                <p class="social-profile-bio" id="display-bio">Vlogger & Creator</p>
+
+                <div class="social-action-buttons">
+                    <button class="btn-social-outline" onclick="abrirModalEdicion()">EDIT PROFILE</button>
+                    <button class="btn-social-solid" onclick="abrirModalMarcos()">TIENDA / MARCOS</button>
+                </div>
+
+                <div class="social-stats-row">
+                    <div class="stat-box"><span class="stat-number">252k</span><span class="stat-label">Followers</span></div>
+                    <div class="stat-box"><span class="stat-number">378</span><span class="stat-label">Following</span></div>
+                    <div class="stat-box"><span class="stat-number" id="posts-counter">0</span><span class="stat-label">Posts</span></div>
+                </div>
+            </div>
+
+            <div class="social-tabs-nav">
+                <button class="social-tab-item active">PHOTOS</button>
+                <button class="social-tab-item">VIDEOS</button>
+                <button class="social-tab-item">POSTS</button>
+                <button class="social-tab-item">ABOUT</button>
+            </div>
+
+            <!-- Galería interactiva de 6 espacios -->
+            <div class="social-photos-grid">
+                <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(1)"><img id="gallery-img-1" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(2)"><img id="gallery-img-2" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(3)"><img id="gallery-img-3" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(4)"><img id="gallery-img-4" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-tall" onclick="triggerSubidaGaleria(5)"><img id="gallery-img-5" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+                <div class="grid-photo-item item-short" onclick="triggerSubidaGaleria(6)"><img id="gallery-img-6" src="" alt="Foto"><div class="upload-overlay"><i class="fas fa-plus"></i></div></div>
+            </div>
+            
+            <input type="file" id="input-gallery" accept="image/*" style="display: none;" onchange="procesarImagenGaleria(event)">
+        </div>
+    </div>
+
+    <!-- MODAL DE MERCADO, TIENDA Y TROFEOS -->
+    <div id="modal-marcos" class="modal-overlay hidden">
+        <div class="modal-content shop-modal">
+            <h3>Mercado de Marcos & Trofeos</h3>
+            
+            <div class="auth-tabs" style="margin: 15px 0;">
+                <button class="auth-tab active" id="m-tab-comprar" onclick="cambiarSeccionMercado('comprar')">Comprar / Sistema</button>
+                <button class="auth-tab" id="m-tab-crear" onclick="cambiarSeccionMercado('crear')">Crear Marco</button>
+            </div>
+
+            <!-- Pestaña Comprar / Mercado Global + Trofeos del Sistema -->
+            <div id="seccion-mercado-comprar">
+                <p class="modal-subtitle">Marcos oficiales de trofeos y creaciones de otros usuarios:</p>
+                <div class="marcos-grid" id="lista-marcos-disponibles" style="max-height: 250px; overflow-y: auto;">
+                    <!-- Marcos fijos del sistema (Trofeos) -->
+                    <div class="marco-card" onclick="equiparMarcoSistema('default', true)">
+                        <div class="preview-ring marco-default"><div class="preview-avatar-inner"></div></div>
+                        <span class="marco-title">Clásico</span>
+                        <span class="marco-status unlocked">Por defecto</span>
+                    </div>
+
+                    <div class="marco-card" onclick="verificarLogroTrofeoOro()">
+                        <div class="preview-ring marco-oro"><div class="preview-avatar-inner"></div></div>
+                        <span class="marco-title">Rey Dorado</span>
+                        <span class="marco-status" id="status-oro">Logro: 3 Fotos</span>
+                    </div>
+
+                    <div class="marco-card" onclick="verificarLogroTrofeoDiamante()">
+                        <div class="preview-ring marco-diamante"><div class="preview-avatar-inner"></div></div>
+                        <span class="marco-title">Diamante Élite</span>
+                        <span class="marco-status" id="status-diamante">Logro: 6 Fotos</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
+                    <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 8px;">MARCOS DE OTROS USUARIOS (MERCADO):</span>
+                    <div id="mercado-creadores-grid" class="marcos-grid" style="max-height: 180px; overflow-y: auto;">
+                        <!-- Se inyectan los marcos creados por la comunidad -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña Crear Marco (Subir PNG/GIF) -->
+            <div id="seccion-mercado-crear" class="hidden">
+                <p class="modal-subtitle">Sube tu diseño en PNG transparente o GIF animado (Recomendado 500x500px):</p>
+                <input type="file" id="upload-marco" accept="image/png, image/gif" style="display: none;" onchange="previewMarcoCustom(event)">
+                <div class="register-avatar-upload" onclick="document.getElementById('upload-marco').click()" style="width: 100px; height: 100px; border-radius: 14px;">
+                    <div class="avatar-preview-placeholder" id="preview-box-text">
+                        <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                        <span>Elegir Archivo</span>
+                    </div>
+                    <div id="preview-marco-nuevo" style="width: 100%; height: 100%; background-size: contain; background-repeat: no-repeat; background-position: center; display: none;"></div>
+                </div>
+                <button class="btn-social-solid" onclick="publicarMarcoEnMercado()" style="width: 100%; margin-top: 15px;">Publicar en el Mercado</button>
+            </div>
+
+            <button class="btn-social-outline" onclick="cerrarModalMarcos()" style="margin-top: 15px; width:100%;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR PERFIL -->
+    <div id="modal-edicion" class="modal-overlay hidden">
         <div class="modal-content">
-            <h3>Mercado de Creadores</h3>
-            <div class="tab-container">
-                <button onclick="cambiarSeccion('comprar')">Comprar</button>
-                <button onclick="cambiarSeccion('crear')">Crear Marco</button>
+            <h3>Editar Perfil</h3>
+            <div class="register-avatar-upload" onclick="document.getElementById('edit-selector-foto').click()">
+                <img id="edit-avatar-img" src="" alt="Vista previa">
             </div>
-
-            <!-- Sección de Compra -->
-            <div id="seccion-comprar" class="marcos-grid"></div>
-
-            <!-- Sección de Creación -->
-            <div id="seccion-crear" class="hidden">
-                <input type="file" id="upload-marco" accept="image/png, image/gif" onchange="previewMarco(event)">
-                <div id="preview-marco-nuevo" class="marco-preview-box"></div>
-                <button class="btn-publicar" onclick="publicarMarco()">Publicar Marco</button>
+            <input type="file" id="edit-selector-foto" accept="image/*" style="display: none;" onchange="procesarImagenSeleccionada(event, 'edit-avatar-img', null)">
+            
+            <div class="input-group" style="margin-top: 15px;">
+                <label>Nombre a mostrar</label>
+                <input type="text" id="edit-name">
+            </div>
+            <div class="input-group">
+                <label>Biografía</label>
+                <input type="text" id="edit-bio">
             </div>
             
-            <button class="btn-cerrar" onclick="document.getElementById('modal-mercado').classList.add('hidden')">Cerrar</button>
+            <div class="modal-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn-social-outline" onclick="cerrarModalEdicion()" style="flex: 1;">Cancelar</button>
+                <button class="btn-social-solid" onclick="guardarEdicion()" style="flex: 1;">Guardar</button>
+            </div>
         </div>
     </div>
 
+    <!-- SCRIPT GENERAL INTEGRADO -->
     <script>
-        // Al cargar la página, recuperar marco equipado
+        let fotoTemporalBase64 = "";
+        let marcoTempBase64 = "";
+        let idGaleriaActual = 0;
+
         window.onload = function() {
-            const user = localStorage.getItem('znet_sesion_activa');
-            if(user) {
-                const marco = localStorage.getItem(`znet_marco_custom_${user}`);
-                if(marco) document.getElementById('div-marco-custom').style.backgroundImage = `url(${marco})`;
+            if(localStorage.getItem('znet_theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                const icon = document.getElementById('theme-icon');
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun');
+            }
+
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                if(loadingScreen) loadingScreen.classList.add('hidden');
+                
+                const usuarioActivo = localStorage.getItem('znet_sesion_activa');
+                if (usuarioActivo) {
+                    cargarPerfilUsuario(usuarioActivo);
+                } else {
+                    mostrarPantallaAcceso();
+                }
+            }, 300);
+        }
+
+        function alternarTema() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('znet_theme', 'dark');
+                if(icon) icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                localStorage.setItem('znet_theme', 'light');
+                if(icon) icon.classList.replace('fa-sun', 'fa-moon');
             }
         }
 
-        function abrirMercado() {
-            document.getElementById('modal-mercado').classList.remove('hidden');
-            renderizarMercado();
+        function cambiarPestañaAuth(tipo) {
+            document.getElementById('tab-login').classList.toggle('active', tipo === 'login');
+            document.getElementById('tab-register').classList.toggle('active', tipo === 'register');
+            document.getElementById('form-login').classList.toggle('hidden', tipo !== 'login');
+            document.getElementById('form-register').classList.toggle('hidden', tipo !== 'register');
         }
 
-        function cambiarSeccion(tipo) {
-            document.getElementById('seccion-comprar').classList.toggle('hidden', tipo !== 'comprar');
-            document.getElementById('seccion-crear').classList.toggle('hidden', tipo !== 'crear');
+        function procesarImagenSeleccionada(event, imgId, boxId) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 400;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    } else {
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    fotoTemporalBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+                    if(boxId) {
+                        const box = document.getElementById(boxId);
+                        if(box) box.classList.add('hidden');
+                    }
+                    const imgElement = document.getElementById(imgId);
+                    if(imgElement) {
+                        imgElement.src = fotoTemporalBase64;
+                        imgElement.classList.remove('hidden');
+                    }
+                }
+                img.src = e.target.result;
+            }
+            lector.readAsDataURL(archivo);
         }
 
-        function previewMarco(event) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('preview-marco-nuevo').style.backgroundImage = `url(${e.target.result})`;
-                window.tempMarco = e.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
+        function procesarRegistro() {
+            const usuario = document.getElementById('reg-user').value.trim();
+            const contrasena = document.getElementById('reg-pass').value.trim();
+            
+            if (!usuario || !contrasena) { alert("Llena todos los campos de texto."); return; }
+            if (!fotoTemporalBase64) { alert("Sube una foto de perfil válida."); return; }
+
+            const key = usuario.toLowerCase();
+            localStorage.setItem(`znet_user_${key}`, usuario);
+            localStorage.setItem(`znet_pass_${key}`, contrasena);
+            localStorage.setItem(`znet_pic_${key}`, fotoTemporalBase64);
+            localStorage.setItem(`znet_bio_${key}`, "Vlogger & Creator");
+            localStorage.setItem(`znet_tipo_marco_${key}`, "sistema");
+            localStorage.setItem(`znet_marco_${key}`, "default");
+
+            localStorage.setItem('znet_sesion_activa', key);
+            cargarPerfilUsuario(key);
         }
 
-        function publicarMarco() {
-            if(!window.tempMarco) return alert("Sube una imagen primero");
-            let mercado = JSON.parse(localStorage.getItem('znet_mercado') || "[]");
-            mercado.push({ data: window.tempMarco, autor: localStorage.getItem('znet_sesion_activa') });
-            localStorage.setItem('znet_mercado', JSON.stringify(mercado));
-            alert("¡Marco publicado en la tienda!");
-            renderizarMercado();
+        function procesarLogin() {
+            const usuario = document.getElementById('login-user').value.trim().toLowerCase();
+            const contrasena = document.getElementById('login-pass').value.trim();
+
+            if (!usuario || !contrasena) { alert("Introduce usuario y contraseña."); return; }
+
+            const passGuardado = localStorage.getItem(`znet_pass_${usuario}`);
+            if (passGuardado && passGuardado === contrasena) {
+                localStorage.setItem('znet_sesion_activa', usuario);
+                cargarPerfilUsuario(usuario);
+            } else {
+                alert("Usuario o contraseña incorrectos.");
+            }
         }
 
-        function renderizarMercado() {
-            const cont = document.getElementById('seccion-comprar');
-            const mercado = JSON.parse(localStorage.getItem('znet_mercado') || "[]");
-            cont.innerHTML = mercado.map(m => `
-                <div class="market-item" onclick="equiparMarco('${m.data}')">
-                    <div style="background-image:url(${m.data})"></div>
-                    <small>Autor: ${m.autor}</small>
+        function cerrarSesion() {
+            localStorage.removeItem('znet_sesion_activa');
+            location.reload();
+        }
+
+        function cargarPerfilUsuario(userKey) {
+            const nombre = localStorage.getItem(`znet_user_${userKey}`) || "Usuario";
+            const foto = localStorage.getItem(`znet_pic_${userKey}`);
+            const bio = localStorage.getItem(`znet_bio_${userKey}`) || "Vlogger & Creator";
+
+            document.getElementById('display-username').textContent = nombre;
+            document.getElementById('display-bio').textContent = bio;
+            
+            if (foto) {
+                document.getElementById('foto-avatar').src = foto;
+            }
+
+            // Cargar marco activo (puede ser del sistema o custom)
+            aplicarMarcoActivoUsuario(userKey);
+
+            // Cargar galería y contar posts
+            let postsCount = 0;
+            for(let i = 1; i <= 6; i++) {
+                const imgGuardada = localStorage.getItem(`znet_gallery_${userKey}_${i}`);
+                const imgElement = document.getElementById(`gallery-img-${i}`);
+                if(imgGuardada) {
+                    imgElement.src = imgGuardada;
+                    imgElement.style.display = 'block';
+                    postsCount++;
+                } else {
+                    imgElement.style.display = 'none';
+                }
+            }
+            document.getElementById('posts-counter').textContent = postsCount;
+
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('main-profile-screen').classList.remove('hidden');
+        }
+
+        function mostrarPantallaAcceso() {
+            document.getElementById('main-profile-screen').classList.add('hidden');
+            document.getElementById('auth-container').classList.remove('hidden');
+            cambiarPestañaAuth('login');
+        }
+
+        /* --- SISTEMA DE MARCOS, TROFEOS Y MERCADO --- */
+        function abrirModalMarcos() {
+            let postsCount = parseInt(document.getElementById('posts-counter').textContent) || 0;
+
+            const statusOro = document.getElementById('status-oro');
+            if (postsCount >= 3) {
+                statusOro.textContent = "¡Desbloqueado!";
+                statusOro.style.color = "#27ae60";
+            } else {
+                statusOro.textContent = `Progreso: ${postsCount}/3 fotos`;
+                statusOro.style.color = "var(--text-muted)";
+            }
+
+            const statusDiamante = document.getElementById('status-diamante');
+            if (postsCount >= 6) {
+                statusDiamante.textContent = "¡Desbloqueado!";
+                statusDiamante.style.color = "#27ae60";
+            } else {
+                statusDiamante.textContent = `Progreso: ${postsCount}/6 fotos`;
+                statusDiamante.style.color = "var(--text-muted)";
+            }
+
+            renderizarMercadoComunidad();
+            document.getElementById('modal-marcos').classList.remove('hidden');
+        }
+
+        function cerrarModalMarcos() {
+            document.getElementById('modal-marcos').classList.add('hidden');
+        }
+
+        function cambiarSeccionMercado(tipo) {
+            document.getElementById('m-tab-comprar').classList.toggle('active', tipo === 'comprar');
+            document.getElementById('m-tab-crear').classList.toggle('active', tipo === 'crear');
+            document.getElementById('seccion-mercado-comprar').classList.toggle('hidden', tipo !== 'comprar');
+            document.getElementById('seccion-mercado-crear').classList.toggle('hidden', tipo !== 'crear');
+        }
+
+        function equiparMarcoSistema(nombreMarco, desbloqueado) {
+            if(!desbloqueado) return;
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            localStorage.setItem(`znet_tipo_marco_${userKey}`, "sistema");
+            localStorage.setItem(`znet_marco_${userKey}`, nombreMarco);
+            aplicarMarcoActivoUsuario(userKey);
+            cerrarModalMarcos();
+            alert("¡Marco aplicado con éxito!");
+        }
+
+        function verificarLogroTrofeoOro() {
+            let postsCount = parseInt(document.getElementById('posts-counter').textContent) || 0;
+            if (postsCount >= 3) {
+                equiparMarcoSistema('oro', true);
+            } else {
+                alert(`Te faltan fotos. Llevas ${postsCount}/3 para desbloquear este trofeo.`);
+            }
+        }
+
+        function verificarLogroTrofeoDiamante() {
+            let postsCount = parseInt(document.getElementById('posts-counter').textContent) || 0;
+            if (postsCount >= 6) {
+                equiparMarcoSistema('diamante', true);
+            } else {
+                alert(`Debes completar los 6 espacios. Llevas ${postsCount}/6 fotos.`);
+            }
+        }
+
+        function previewMarcoCustom(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                marcoTempBase64 = e.target.result;
+                document.getElementById('preview-box-text').classList.add('hidden');
+                const prev = document.getElementById('preview-marco-nuevo');
+                prev.style.backgroundImage = `url(${marcoTempBase64})`;
+                prev.style.display = 'block';
+            }
+            lector.readAsDataURL(archivo);
+        }
+
+        function publicarMarcoEnMercado() {
+            if (!marcoTempBase64) return alert("Sube un archivo de marco válido (PNG/GIF).");
+            
+            let mercado = JSON.parse(localStorage.getItem('znet_mercado_comunidad') || "[]");
+            const creador = localStorage.getItem('znet_sesion_activa');
+            
+            mercado.push({
+                id: Date.now(),
+                data: marcoTempBase64,
+                autor: creador
+            });
+
+            localStorage.setItem('znet_mercado_comunidad', JSON.stringify(mercado));
+            alert("¡Tu marco ha sido publicado en el mercado de la comunidad!");
+            cambiarSeccionMercado('comprar');
+            renderizarMercadoComunidad();
+        }
+
+        function renderizarMercadoComunidad() {
+            const contenedor = document.getElementById('mercado-creadores-grid');
+            const mercado = JSON.parse(localStorage.getItem('znet_mercado_comunidad') || "[]");
+            
+            if (mercado.length === 0) {
+                contenedor.innerHTML = `<span style="font-size: 0.7rem; color: var(--text-muted); grid-column: span 3; text-align:center; padding: 10px;">No hay marcos creados aún. ¡Sé el primero en subir uno!</span>`;
+                return;
+            }
+
+            contenedor.innerHTML = mercado.map(m => `
+                <div class="marco-card" onclick="equiparMarcoCustom('${m.data}')">
+                    <div class="preview-ring" style="background-image: url(${m.data}); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                        <div class="preview-avatar-inner" style="background: transparent;"></div>
+                    </div>
+                    <span class="marco-title">Custom</span>
+                    <span class="marco-status unlocked">Por: ${m.autor}</span>
                 </div>
             `).join('');
         }
 
-        function equiparMarco(data) {
-            const user = localStorage.getItem('znet_sesion_activa');
-            localStorage.setItem(`znet_marco_custom_${user}`, data);
-            document.getElementById('div-marco-custom').style.backgroundImage = `url(${data})`;
-            alert("¡Marco equipado!");
+        function equiparMarcoCustom(dataUrl) {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            localStorage.setItem(`znet_tipo_marco_${userKey}`, "custom");
+            localStorage.setItem(`znet_marco_custom_url_${userKey}`, dataUrl);
+            aplicarMarcoActivoUsuario(userKey);
+            cerrarModalMarcos();
+            alert("¡Marco personalizado equipado!");
+        }
+
+        function aplicarMarcoActivoUsuario(userKey) {
+            const tipo = localStorage.getItem(`znet_tipo_marco_${userKey}`) || "sistema";
+            const avatarWrapper = document.getElementById('avatar-container-wrapper');
+            const marcoCustomDiv = document.getElementById('div-marco-custom');
+
+            avatarWrapper.className = "social-avatar-container";
+            marcoCustomDiv.style.backgroundImage = "none";
+
+            if (tipo === "sistema") {
+                const nombreMarco = localStorage.getItem(`znet_marco_${userKey}`) || "default";
+                if (nombreMarco !== "default") {
+                    avatarWrapper.classList.add(`marco-${nombreMarco}`);
+                }
+            } else if (tipo === "custom") {
+                const urlCustom = localStorage.getItem(`znet_marco_custom_url_${userKey}`);
+                if (urlCustom) {
+                    marcoCustomDiv.style.backgroundImage = `url(${urlCustom})`;
+                }
+            }
+        }
+
+        /* --- EDICIÓN DE PERFIL --- */
+        function abrirModalEdicion() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            document.getElementById('edit-name').value = localStorage.getItem(`znet_user_${userKey}`) || "";
+            document.getElementById('edit-bio').value = localStorage.getItem(`znet_bio_${userKey}`) || "";
+            
+            const fotoActual = localStorage.getItem(`znet_pic_${userKey}`);
+            if(fotoActual) {
+                document.getElementById('edit-avatar-img').src = fotoActual;
+                fotoTemporalBase64 = fotoActual;
+            }
+            
+            document.getElementById('modal-edicion').classList.remove('hidden');
+        }
+
+        function cerrarModalEdicion() {
+            document.getElementById('modal-edicion').classList.add('hidden');
+        }
+
+        function guardarEdicion() {
+            const userKey = localStorage.getItem('znet_sesion_activa');
+            const nuevoNombre = document.getElementById('edit-name').value.trim();
+            const nuevaBio = document.getElementById('edit-bio').value.trim();
+
+            if (!nuevoNombre) { alert("El nombre no puede estar vacío."); return; }
+
+            localStorage.setItem(`znet_user_${userKey}`, nuevoNombre);
+            localStorage.setItem(`znet_bio_${userKey}`, nuevaBio);
+            if(fotoTemporalBase64) {
+                localStorage.setItem(`znet_pic_${userKey}`, fotoTemporalBase64);
+            }
+
+            cargarPerfilUsuario(userKey);
+            cerrarModalEdicion();
+        }
+
+        /* --- GALERÍA DE FOTOS --- */
+        function triggerSubidaGaleria(id) {
+            idGaleriaActual = id;
+            document.getElementById('input-gallery').click();
+        }
+
+        function procesarImagenGaleria(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    } else {
+                        if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const base64Img = canvas.toDataURL('image/jpeg', 0.85);
+                    const userKey = localStorage.getItem('znet_sesion_activa');
+                    
+                    localStorage.setItem(`znet_gallery_${userKey}_${idGaleriaActual}`, base64Img);
+                    cargarPerfilUsuario(userKey);
+                }
+                img.src = e.target.result;
+            }
+            lector.readAsDataURL(archivo);
         }
     </script>
 </body>
