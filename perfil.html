@@ -61,14 +61,14 @@
     <!-- PANTALLA PRINCIPAL -->
     <div id="main-profile-screen" class="hidden">
         
-        <!-- Franja superior diagonal oscura restaurada -->
+        <!-- Franja superior diagonal oscura -->
         <div class="profile-diagonal-bg">
             <div class="social-content-wrapper">
                 <div class="social-top-bar">
                     <button class="btn-icon-top" onclick="cerrarSesion()" title="Cerrar Sesión">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <span class="social-top-title">Profile</span>
+                    <span class="social-top-title">Z-Net Profile</span>
                     <button class="btn-icon-top" onclick="alternarTema()" title="Cambiar Tema">
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
@@ -80,21 +80,27 @@
             <div class="social-profile-header">
                 <div class="social-avatar-container">
                     <img src="" id="foto-avatar" class="social-avatar-img" alt="Avatar">
+                    <img src="" id="foto-marco" class="social-avatar-frame hidden" alt="Marco">
                     <span class="social-verified-badge"><i class="fas fa-check"></i></span>
                 </div>
                 
+                <button class="shop-icon-btn" onclick="triggerSubidaMarco()" title="Subir / Cambiar Marco PNG">
+                    <i class="fas fa-store"></i>
+                </button>
+                <input type="file" id="input-marco" accept="image/png" style="display: none;" onchange="procesarSubidaMarco(event)">
+
                 <h1 class="social-profile-name" id="display-username">Nombre</h1>
-                <p class="social-profile-bio" id="display-bio">Vlogger & Fashion Lover</p>
+                <p class="social-profile-bio" id="display-bio">Vlogger & Creator</p>
 
                 <div class="social-action-buttons">
                     <button class="btn-social-outline" onclick="abrirModalEdicion()">EDIT PROFILE</button>
-                    <button class="btn-social-solid">FOLLOW</button>
+                    <button class="btn-social-solid">TIENDA / MARCOS</button>
                 </div>
 
                 <div class="social-stats-row">
                     <div class="stat-box"><span class="stat-number">252k</span><span class="stat-label">Followers</span></div>
                     <div class="stat-box"><span class="stat-number">378</span><span class="stat-label">Following</span></div>
-                    <div class="stat-box"><span class="stat-number">115</span><span class="stat-label">Posts</span></div>
+                    <div class="stat-box"><span class="stat-number">6</span><span class="stat-label">Posts</span></div>
                 </div>
             </div>
 
@@ -241,7 +247,7 @@
             localStorage.setItem(`znet_user_${key}`, usuario);
             localStorage.setItem(`znet_pass_${key}`, contrasena);
             localStorage.setItem(`znet_pic_${key}`, fotoTemporalBase64);
-            localStorage.setItem(`znet_bio_${key}`, "Vlogger & Fashion Lover");
+            localStorage.setItem(`znet_bio_${key}`, "Vlogger & Creator");
 
             localStorage.setItem('znet_sesion_activa', key);
             cargarPerfilUsuario(key);
@@ -270,13 +276,22 @@
         function cargarPerfilUsuario(userKey) {
             const nombre = localStorage.getItem(`znet_user_${userKey}`) || "Usuario";
             const foto = localStorage.getItem(`znet_pic_${userKey}`);
-            const bio = localStorage.getItem(`znet_bio_${userKey}`) || "Vlogger & Fashion Lover";
+            const bio = localStorage.getItem(`znet_bio_${userKey}`) || "Vlogger & Creator";
+            const marco = localStorage.getItem(`znet_frame_${userKey}`);
 
             document.getElementById('display-username').textContent = nombre;
             document.getElementById('display-bio').textContent = bio;
             
             if (foto) {
                 document.getElementById('foto-avatar').src = foto;
+            }
+
+            const imgMarco = document.getElementById('foto-marco');
+            if (marco) {
+                imgMarco.src = marco;
+                imgMarco.classList.remove('hidden');
+            } else {
+                imgMarco.classList.add('hidden');
             }
 
             for(let i = 1; i <= 6; i++) {
@@ -333,6 +348,39 @@
 
             cargarPerfilUsuario(userKey);
             cerrarModalEdicion();
+        }
+
+        function triggerSubidaMarco() {
+            document.getElementById('input-marco').click();
+        }
+
+        function procesarSubidaMarco(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const SIZE = 400;
+                    canvas.width = SIZE;
+                    canvas.height = SIZE;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, SIZE, SIZE);
+
+                    const base64Marco = canvas.toDataURL('image/png');
+                    const userKey = localStorage.getItem('znet_sesion_activa');
+
+                    localStorage.setItem(`znet_frame_${userKey}`, base64Marco);
+                    
+                    const imgMarco = document.getElementById('foto-marco');
+                    imgMarco.src = base64Marco;
+                    imgMarco.classList.remove('hidden');
+                }
+                img.src = e.target.result;
+            }
+            lector.readAsDataURL(archivo);
         }
 
         function triggerSubidaGaleria(id) {
