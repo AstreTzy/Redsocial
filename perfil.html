@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Z-NET - Perfil</title>
-    <!-- Enlace obligatorio al archivo de estilos -->
     <link rel="stylesheet" href="perfil.css">
-    <!-- Iconos de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <div class="profile-container">
         
-        <!-- PANTALLA DE ACCESO / LOGIN (Visible por defecto si no ha iniciado sesión) -->
+        <!-- PANTALLA DE ACCESO / LOGIN -->
         <div id="auth-screen" class="auth-card">
             <h1 class="auth-logo">Z<span>·</span>NET</h1>
             
@@ -22,7 +20,6 @@
                 <button class="auth-tab">Registrarse</button>
             </div>
 
-            <!-- Formulario de Inicio -->
             <div class="input-group">
                 <label>Usuario</label>
                 <input type="text" id="login-user" placeholder="Tu usuario">
@@ -35,139 +32,65 @@
         </div>
 
 
-        <!-- PANTALLA DE PERFIL PRINCIPAL (Oculta hasta iniciar sesión) -->
+        <!-- PANTALLA DE PERFIL PRINCIPAL (Estilo Inmersivo Centrado) -->
         <div id="main-profile-screen" class="hidden">
             
-            <div class="profile-top-bar">
-                <button class="back-btn" onclick="window.location.href='index.html'">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="btn-logout" onclick="cerrarSesion()">
-                    <i class="fas fa-sign-out-alt"></i> Salir
-                </button>
-            </div>
-
-            <!-- CABECERA DEL PERFIL (Avatar con neón y nombre) -->
-            <div class="profile-header-card" onclick="abrirModalPerfil()">
-                <div class="profile-avatar-wrapper">
-                    <img src="1000263118.jpg" id="foto-avatar" alt="Avatar">
+            <!-- Banner superior con foto de fondo difuminada -->
+            <div class="profile-hero-banner">
+                <img src="1000263118.jpg" class="banner-bg-img" alt="Banner Background">
+                
+                <div class="profile-top-bar">
+                    <button class="back-btn" onclick="window.location.href='index.html'">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="menu-dots-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
                 </div>
-                <div class="profile-user-info">
-                    <h1 class="profile-name" id="display-header-username">Pico canoa</h1>
-                    <div class="profile-actions-row">
-                        <button class="btn-following">Following</button>
-                        <button class="btn-icon-action"><i class="fas fa-plus"></i></button>
-                        <button class="btn-icon-action"><i class="fas fa-gift"></i></button>
+
+                <!-- Avatar centralizado flotando sobre el banner -->
+                <div class="profile-avatar-center-wrapper">
+                    <div class="profile-avatar-ring">
+                        <img src="1000263118.jpg" alt="Avatar">
                     </div>
                 </div>
             </div>
 
-            <!-- ESTADÍSTICAS -->
-            <div class="profile-stats-grid">
-                <div class="stat-item">
-                    <span class="stat-number">1,615</span>
-                    <span class="stat-label">Followers</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">12,412</span>
-                    <span class="stat-label">Likes</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">300</span>
-                    <span class="stat-label">Photos</span>
+            <!-- Información del usuario centralizada -->
+            <div class="profile-info-center">
+                <h1 class="profile-name-center">Sophia</h1>
+                <div class="profile-status-row">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Online</span>
                 </div>
             </div>
 
-            <!-- HISTORIAS / BURBUJAS -->
-            <div class="stories-scroll">
-                <div class="story-bubble">
-                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150" alt="Story"></div>
-                    <span class="story-label">Vote</span>
-                </div>
-                <div class="story-bubble">
-                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=150" alt="Story"></div>
-                    <span class="story-label">#BLM</span>
-                </div>
-                <div class="story-bubble">
-                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=150" alt="Story"></div>
-                    <span class="story-label">Fits</span>
-                </div>
-                <div class="story-bubble">
-                    <div class="story-ring"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=150" alt="Story"></div>
-                    <span class="story-label">Music</span>
-                </div>
+            <!-- Botones de acción tipo píldora -->
+            <div class="profile-pills-row">
+                <button class="pill-btn pill-dark">
+                    <i class="fas fa-bolt"></i> Exclusive Chat
+                </button>
+                <button class="pill-btn pill-light">
+                    <i class="fas fa-smile"></i> Emotional Support
+                </button>
             </div>
 
-            <!-- CUADRÍCULA DE FOTOS -->
-            <div class="section-heading">Photos & Video</div>
-            <div class="photo-grid">
-                <div class="photo-card">
-                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" alt="Post 1">
-                </div>
-                <div class="photo-card">
-                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500" alt="Post 2">
-                </div>
+            <!-- Separador / Sección inferior -->
+            <div class="section-divider">
+                <span>Today</span>
+            </div>
+
+            <!-- Contenido inferior -->
+            <div class="profile-feed-placeholder">
+                <button class="btn-logout-inline" onclick="cerrarSesion()">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- VENTANA FLOTANTE / MODAL (Se abre al hacer clic en el perfil) -->
-    <div id="profile-modal" class="modal-overlay hidden" onclick="cerrarModalPerfil(event)">
-        <div class="modal-sheet" onclick="event.stopPropagation()">
-            
-            <div class="modal-handle-bar">
-                <div class="modal-drag-indicator"></div>
-                <button class="modal-close-icon" onclick="cerrarModalPerfilDirecto()"><i class="fas fa-undo-alt"></i></button>
-            </div>
-
-            <div class="modal-user-info-large">
-                <h2 class="modal-title">Pico<br>canoa</h2>
-                <p class="modal-handle">@pico_canoa</p>
-                <div class="modal-badge-row">
-                    <div class="modal-neon-badge"><i class="fas fa-star"></i></div>
-                    <div class="modal-icon-badge"><i class="fas fa-envelope"></i></div>
-                </div>
-            </div>
-
-            <p class="modal-bio">
-                Creador de contenido y estilo futurista en Z-NET. Amante de los estilos estéticos y únicos.
-            </p>
-
-            <div class="modal-stats-grid">
-                <div class="modal-stat">
-                    <span class="modal-stat-num">1,615</span>
-                    <span class="modal-stat-label">Followers</span>
-                </div>
-                <div class="modal-stat">
-                    <span class="modal-stat-num">345</span>
-                    <span class="modal-stat-label">Following</span>
-                </div>
-                <div class="modal-stat">
-                    <span class="modal-stat-num">300</span>
-                    <span class="modal-stat-label">Creations</span>
-                </div>
-            </div>
-
-            <div class="modal-tags-row">
-                <span class="modal-tag">@pollitos</span>
-                <span class="modal-tag">@aesthetic</span>
-                <span class="modal-tag">@znet</span>
-                <span class="modal-tag">@creator</span>
-            </div>
-
-            <div class="modal-photos-carousel">
-                <div class="modal-mini-card"><img src="1000263118.jpg" alt="Post"></div>
-                <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" alt="Post"></div>
-            </div>
-
-        </div>
-    </div>
-
-
-    <!-- Script básico para control de vistas -->
     <script>
         function iniciarSesion() {
             document.getElementById('auth-screen').classList.add('hidden');
@@ -177,18 +100,6 @@
         function cerrarSesion() {
             document.getElementById('main-profile-screen').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
-        }
-
-        function abrirModalPerfil() {
-            document.getElementById('profile-modal').classList.remove('hidden');
-        }
-
-        function cerrarModalPerfil(event) {
-            document.getElementById('profile-modal').classList.add('hidden');
-        }
-
-        function cerrarModalPerfilDirecto() {
-            document.getElementById('profile-modal').classList.add('hidden');
         }
     </script>
 </body>
