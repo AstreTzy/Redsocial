@@ -3,133 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z-NET: Perfil</title>
-    
+    <title>Z-NET - Perfil</title>
+    <!-- Enlace obligatorio al archivo de estilos -->
     <link rel="stylesheet" href="perfil.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Iconos de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <div class="profile-container">
-
-        <!-- VENTANA FLOTANTE / MODAL DE PERFIL DETALLADO -->
-<div id="profile-modal" class="modal-overlay hidden" onclick="cerrarModalPerfil(event)">
-    <div class="modal-sheet" onclick="event.stopPropagation()">
         
-        <!-- Barra superior del modal con la línea de arrastre -->
-        <div class="modal-handle-bar">
-            <div class="modal-drag-indicator"></div>
-            <button class="modal-close-icon" onclick="cerrarModalPerfilDirecto()"><i class="fas fa-undo-alt"></i></button>
-        </div>
-
-        <!-- Contenido de la tarjeta flotante -->
-        <div class="modal-user-info-large">
-            <h2 class="modal-title">Oliver<br>Bennet</h2>
-            <p class="modal-handle">@oliver_bennent</p>
-            <div class="modal-badge-row">
-                <div class="modal-neon-badge"><i class="fas fa-star"></i></div>
-                <div class="modal-icon-badge"><i class="fas fa-envelope"></i></div>
-            </div>
-        </div>
-
-        <p class="modal-bio">
-            Designers focused on creating impactful, user-cantered digital experiences and branding.
-        </p>
-
-        <!-- Estadísticas del modal -->
-        <div class="modal-stats-grid">
-            <div class="modal-stat">
-                <span class="modal-stat-num">521</span>
-                <span class="modal-stat-label">Followers</span>
-            </div>
-            <div class="modal-stat">
-                <span class="modal-stat-num">345</span>
-                <span class="modal-stat-label">Following</span>
-            </div>
-            <div class="modal-stat">
-                <span class="modal-stat-num">566</span>
-                <span class="modal-stat-label">Creations</span>
-            </div>
-        </div>
-
-        <!-- Etiquetas de intereses -->
-        <div class="modal-tags-row">
-            <span class="modal-tag">@bookreader</span>
-            <span class="modal-tag">@foodiee</span>
-            <span class="modal-tag">@traveler</span>
-            <span class="modal-tag">@hiker</span>
-            <span class="modal-tag">@designer</span>
-        </div>
-
-        <!-- Carrusel de fotos miniaturas -->
-        <div class="modal-photos-carousel">
-            <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300" alt="Post"></div>
-            <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" alt="Post"></div>
-            <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300" alt="Post"></div>
-        </div>
-        
-        <div class="modal-carousel-arrows">
-            <button class="arrow-btn"><i class="fas fa-arrow-left"></i></button>
-            <button class="arrow-btn"><i class="fas fa-arrow-right"></i></button>
-        </div>
-
-        <!-- Comentario o reseña inferior -->
-        <div class="modal-review-card">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="User">
-            <div class="modal-review-text">
-                <p>Thanks for the great recipe recommendation for this greek salad. Had so much fun making it with my family. Greetings from USA!</p>
-                <span class="modal-review-author">Elena Juni<br><b>@elena.juni</b></span>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-        <!-- PANTALLA DE ACCESO (LOGIN / REGISTRO) -->
-        <div class="auth-card" id="auth-screen">
-            <div class="auth-logo">Z·NET<span>.</span></div>
+        <!-- PANTALLA DE ACCESO / LOGIN (Visible por defecto si no ha iniciado sesión) -->
+        <div id="auth-screen" class="auth-card">
+            <h1 class="auth-logo">Z<span>·</span>NET</h1>
             
             <div class="auth-tabs">
-                <button class="auth-tab active" id="tab-login" onclick="cambiarPestaña('login')">Entrar</button>
-                <button class="auth-tab" id="tab-register" onclick="cambiarPestaña('register')">Registrarse</button>
+                <button class="auth-tab active">Entrar</button>
+                <button class="auth-tab">Registrarse</button>
             </div>
 
-            <div id="form-login" class="auth-form-container">
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> Usuario</label>
-                    <input type="text" id="login-user" placeholder="Tu usuario">
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Contraseña</label>
-                    <input type="password" id="login-pass" placeholder="••••••••">
-                </div>
-                <button class="btn-auth-submit" onclick="procesarLogin()">Entrar</button>
+            <!-- Formulario de Inicio -->
+            <div class="input-group">
+                <label>Usuario</label>
+                <input type="text" id="login-user" placeholder="Tu usuario">
             </div>
-
-            <div id="form-register" class="auth-form-container hidden">
-                <div class="register-avatar-upload" onclick="document.getElementById('reg-selector-foto').click()">
-                    <div class="avatar-preview-placeholder" id="avatar-preview-box">
-                        <i class="fas fa-camera"></i>
-                        <span>Foto</span>
-                    </div>
-                    <img id="reg-avatar-img" class="hidden" alt="Preview">
-                </div>
-                <input type="file" id="reg-selector-foto" accept="image/*" style="display: none;" onchange="previsualizarFotoRegistro(event)">
-
-                <div class="input-group">
-                    <label><i class="fas fa-user-plus"></i> Crear Usuario</label>
-                    <input type="text" id="reg-user" placeholder="Ej: Anastasia">
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Contraseña</label>
-                    <input type="password" id="reg-pass" placeholder="••••••••">
-                </div>
-                <button class="btn-auth-submit" onclick="procesarRegistro()">Registrarse</button>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="login-pass" placeholder="••••••••">
             </div>
+            <button class="btn-auth-submit" onclick="iniciarSesion()">Entrar</button>
         </div>
 
-        <!-- PANTALLA DE PERFIL PRINCIPAL (IDÉNTICA A LA SEGUNDA IMAGEN) -->
+
+        <!-- PANTALLA DE PERFIL PRINCIPAL (Oculta hasta iniciar sesión) -->
         <div id="main-profile-screen" class="hidden">
             
             <div class="profile-top-bar">
@@ -141,13 +47,13 @@
                 </button>
             </div>
 
-            <!-- CABECERA DEL PERFIL (AVATAR CIRCULAR + NOMBRE + BOTONES) -->
-            <div class="profile-header-card">
+            <!-- CABECERA DEL PERFIL (Avatar con neón y nombre) -->
+            <div class="profile-header-card" onclick="abrirModalPerfil()">
                 <div class="profile-avatar-wrapper">
-                    <img src="" id="foto-avatar" alt="Avatar">
+                    <img src="1000263118.jpg" id="foto-avatar" alt="Avatar">
                 </div>
                 <div class="profile-user-info">
-                    <h1 class="profile-name" id="display-header-username">Usuario</h1>
+                    <h1 class="profile-name" id="display-header-username">Pico canoa</h1>
                     <div class="profile-actions-row">
                         <button class="btn-following">Following</button>
                         <button class="btn-icon-action"><i class="fas fa-plus"></i></button>
@@ -172,7 +78,7 @@
                 </div>
             </div>
 
-            <!-- HISTORIAS / BURBUJAS HORIZONTALES -->
+            <!-- HISTORIAS / BURBUJAS -->
             <div class="stories-scroll">
                 <div class="story-bubble">
                     <div class="story-ring"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150" alt="Story"></div>
@@ -192,7 +98,7 @@
                 </div>
             </div>
 
-            <!-- CUADRÍCULA DE FOTOS Y VIDEOS -->
+            <!-- CUADRÍCULA DE FOTOS -->
             <div class="section-heading">Photos & Video</div>
             <div class="photo-grid">
                 <div class="photo-card">
@@ -201,118 +107,88 @@
                 <div class="photo-card">
                     <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500" alt="Post 2">
                 </div>
-                <div class="photo-card">
-                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500" alt="Post 3">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- VENTANA FLOTANTE / MODAL (Se abre al hacer clic en el perfil) -->
+    <div id="profile-modal" class="modal-overlay hidden" onclick="cerrarModalPerfil(event)">
+        <div class="modal-sheet" onclick="event.stopPropagation()">
+            
+            <div class="modal-handle-bar">
+                <div class="modal-drag-indicator"></div>
+                <button class="modal-close-icon" onclick="cerrarModalPerfilDirecto()"><i class="fas fa-undo-alt"></i></button>
+            </div>
+
+            <div class="modal-user-info-large">
+                <h2 class="modal-title">Pico<br>canoa</h2>
+                <p class="modal-handle">@pico_canoa</p>
+                <div class="modal-badge-row">
+                    <div class="modal-neon-badge"><i class="fas fa-star"></i></div>
+                    <div class="modal-icon-badge"><i class="fas fa-envelope"></i></div>
                 </div>
-                <div class="photo-card">
-                    <img src="https://images.unsplash.com/photo-1560942485-b2a11cc13456?w=500" alt="Post 4">
+            </div>
+
+            <p class="modal-bio">
+                Creador de contenido y estilo futurista en Z-NET. Amante de los estilos estéticos y únicos.
+            </p>
+
+            <div class="modal-stats-grid">
+                <div class="modal-stat">
+                    <span class="modal-stat-num">1,615</span>
+                    <span class="modal-stat-label">Followers</span>
                 </div>
+                <div class="modal-stat">
+                    <span class="modal-stat-num">345</span>
+                    <span class="modal-stat-label">Following</span>
+                </div>
+                <div class="modal-stat">
+                    <span class="modal-stat-num">300</span>
+                    <span class="modal-stat-label">Creations</span>
+                </div>
+            </div>
+
+            <div class="modal-tags-row">
+                <span class="modal-tag">@pollitos</span>
+                <span class="modal-tag">@aesthetic</span>
+                <span class="modal-tag">@znet</span>
+                <span class="modal-tag">@creator</span>
+            </div>
+
+            <div class="modal-photos-carousel">
+                <div class="modal-mini-card"><img src="1000263118.jpg" alt="Post"></div>
+                <div class="modal-mini-card"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" alt="Post"></div>
             </div>
 
         </div>
     </div>
 
+
+    <!-- Script básico para control de vistas -->
     <script>
-        let fotoTemporalBase64 = "";
-
-        window.onload = function() {
-            const usuarioActivo = localStorage.getItem('znet_sesion_activa');
-            if (usuarioActivo) {
-                cargarPerfilUsuario(usuarioActivo);
-            } else {
-                mostrarPantallaAcceso();
-            }
-        }
-
-        function cambiarPestaña(tipo) {
-            if (tipo === 'login') {
-                document.getElementById('tab-login').classList.add('active');
-                document.getElementById('tab-register').classList.remove('active');
-                document.getElementById('form-login').classList.remove('hidden');
-                document.getElementById('form-register').classList.add('hidden');
-            } else {
-                document.getElementById('tab-register').classList.add('active');
-                document.getElementById('tab-login').classList.remove('active');
-                document.getElementById('form-register').classList.remove('hidden');
-                document.getElementById('form-login').classList.add('hidden');
-            }
-        }
-
-        function previsualizarFotoRegistro(event) {
-            const archivo = event.target.files[0];
-            if (archivo) {
-                const leerArchivo = new FileReader();
-                leerArchivo.onload = function(e) {
-                    fotoTemporalBase64 = e.target.result;
-                    document.getElementById('avatar-preview-box').classList.add('hidden');
-                    const img = document.getElementById('reg-avatar-img');
-                    img.src = fotoTemporalBase64;
-                    img.classList.remove('hidden');
-                }
-                leerArchivo.readAsDataURL(archivo);
-            }
-        }
-
-        function procesarRegistro() {
-            const usuario = document.getElementById('reg-user').value.trim();
-            const contrasena = document.getElementById('reg-pass').value.trim();
-            
-            if (!usuario || !contrasena || !fotoTemporalBase64) {
-                alert("Por favor completa todos los campos y sube tu foto.");
-                return;
-            }
-
-            localStorage.setItem(`znet_user_${usuario.toLowerCase()}`, usuario);
-            localStorage.setItem(`znet_pass_${usuario.toLowerCase()}`, contrasena);
-            localStorage.setItem(`znet_pic_${usuario.toLowerCase()}`, fotoTemporalBase64);
-
-            localStorage.setItem('znet_sesion_activa', usuario.toLowerCase());
-            cargarPerfilUsuario(usuario.toLowerCase());
-        }
-
-        function procesarLogin() {
-            const usuario = document.getElementById('login-user').value.trim().toLowerCase();
-            const contrasena = document.getElementById('login-pass').value.trim();
-
-            const registroExiste = localStorage.getItem(`znet_user_${usuario}`);
-            const contrasenaCorrecta = localStorage.getItem(`znet_pass_${usuario}`);
-
-            if (registroExiste && contrasenaCorrecta === contrasena) {
-                localStorage.setItem('znet_sesion_activa', usuario);
-                cargarPerfilUsuario(usuario);
-            } else {
-                alert("Usuario o contraseña incorrectos.");
-            }
-        }
-
-        function cargarPerfilUsuario(userKey) {
-            const nombreReal = localStorage.getItem(`znet_user_${userKey}`);
-            const fotoPerfil = localStorage.getItem(`znet_pic_${userKey}`);
-
-            document.getElementById('display-header-username').textContent = nombreReal;
-            document.getElementById('foto-avatar').src = fotoPerfil;
-
+        function iniciarSesion() {
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-profile-screen').classList.remove('hidden');
         }
 
         function cerrarSesion() {
-            localStorage.removeItem('znet_sesion_activa');
-            document.getElementById('login-user').value = "";
-            document.getElementById('login-pass').value = "";
-            document.getElementById('reg-user').value = "";
-            document.getElementById('reg-pass').value = "";
-            document.getElementById('reg-avatar-img').classList.add('hidden');
-            document.getElementById('avatar-preview-box').classList.remove('hidden');
-            fotoTemporalBase64 = "";
-
-            mostrarPantallaAcceso();
-        }
-
-        function mostrarPantallaAcceso() {
             document.getElementById('main-profile-screen').classList.add('hidden');
             document.getElementById('auth-screen').classList.remove('hidden');
-            cambiarPestaña('login');
+        }
+
+        function abrirModalPerfil() {
+            document.getElementById('profile-modal').classList.remove('hidden');
+        }
+
+        function cerrarModalPerfil(event) {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+
+        function cerrarModalPerfilDirecto() {
+            document.getElementById('profile-modal').classList.add('hidden');
         }
     </script>
 </body>
