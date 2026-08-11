@@ -1,8 +1,9 @@
 :root {
-    --bg-light-app: #f4f5f8;
-    --text-dark: #1a1a1a;
-    --text-gray: #757575;
-    --accent-pink: #ff758c;
+    --bg-light: #f8f9fa;
+    --dark-banner: #121212;
+    --text-main: #111111;
+    --text-muted: #777777;
+    --accent-dark: #1e1e1e;
 }
 
 * {
@@ -12,8 +13,8 @@
 }
 
 body {
-    background-color: var(--bg-light-app);
-    color: var(--text-dark);
+    background-color: #eaeef2;
+    color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     min-height: 100vh;
     display: flex;
@@ -33,71 +34,61 @@ body {
 
 .hidden { display: none !important; }
 
-/* Banner superior con imagen de fondo inmersiva */
-.profile-hero-banner {
+/* Banner superior oscuro con corte curvo/diagonal estilo app */
+.profile-header-banner {
+    background-color: var(--dark-banner);
+    height: 145px;
+    padding: 15px 20px;
     position: relative;
-    width: 100%;
-    height: 260px;
-    overflow: hidden;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
 }
 
-.banner-bg-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: blur(15px) brightness(1.1);
-    transform: scale(1.2);
-}
-
-/* Barra superior dentro del banner */
-.profile-top-bar {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
+.top-nav-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 10;
 }
 
-.back-btn, .menu-dots-btn {
-    width: 38px;
-    height: 38px;
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(10px);
+.back-btn, .logout-mini-btn {
+    background: transparent;
     border: none;
-    border-radius: 50%;
-    color: #fff;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    font-size: 0.9rem;
 }
 
-/* Avatar centralizado que sobresale del banner */
-.profile-avatar-center-wrapper {
-    position: absolute;
-    bottom: -45px;
-    left: 50%;
-    transform: translateX(-50%);
+.banner-title {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Avatar flotando en el límite del banner */
+.profile-avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: -50px auto 10px auto;
     z-index: 5;
 }
 
-.profile-avatar-ring {
-    width: 104px;
-    height: 104px;
+.avatar-border {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     padding: 3px;
     background: #ffffff;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
 }
 
-.profile-avatar-ring img {
+.avatar-border img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -105,128 +96,153 @@ body {
     display: block;
 }
 
-/* Información del usuario centrada */
-.profile-info-center {
-    text-align: center;
-    margin-top: 55px;
-    margin-bottom: 20px;
-}
-
-.profile-name-center {
-    font-size: 1.5rem;
+.badge-online {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: #007bff;
+    color: #fff;
+    font-size: 0.55rem;
     font-weight: 800;
-    color: var(--text-dark);
-    margin-bottom: 4px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 2px solid #fff;
 }
 
-.profile-status-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+/* Sección de información */
+.profile-info-section {
+    text-align: center;
+    padding: 0 20px;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #2ecc71;
-    border-radius: 50%;
+.profile-real-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 3px;
 }
 
-.status-text {
+.profile-bio-text {
     font-size: 0.8rem;
-    color: var(--text-gray);
-    font-weight: 600;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 18px;
 }
 
-/* Botones estilo píldora horizontal */
-.profile-pills-row {
+/* Botones de acción */
+.profile-actions-buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
-    padding: 0 20px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
-.pill-btn {
-    padding: 10px 18px;
-    border-radius: 30px;
-    font-size: 0.82rem;
+.btn-action-outline {
+    background: transparent;
+    border: 1px solid #dcdcdc;
+    color: var(--text-main);
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-size: 0.75rem;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.pill-dark {
-    background: #1a1a1a;
+.btn-action-dark {
+    background: var(--accent-dark);
+    border: none;
     color: #ffffff;
+    padding: 10px 28px;
+    border-radius: 25px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.pill-dark i {
-    color: #f1c40f;
+/* Estadísticas */
+.profile-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 20px;
+    padding: 0 10px;
 }
 
-.pill-light {
-    background: #ffffff;
-    color: var(--text-dark);
+.stat-num {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 2px;
 }
 
-.pill-light i {
-    color: #ff758c;
+.stat-txt {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
 }
 
-/* Separador "Today" */
-.section-divider {
-    text-align: center;
-    position: relative;
-    margin: 25px 0;
+/* Pestañas inferiores */
+.profile-tabs-nav {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin-bottom: 15px;
+    padding: 0 10px;
 }
 
-.section-divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    right: 20px;
-    height: 1px;
-    background: #e0e0e0;
-    z-index: 1;
-}
-
-.section-divider span {
-    position: relative;
-    background: #ffffff;
-    padding: 0 15px;
+.tab-item {
     font-size: 0.72rem;
     font-weight: 700;
-    color: var(--text-gray);
-    text-transform: uppercase;
-    z-index: 2;
-}
-
-.profile-feed-placeholder {
-    padding: 20px;
-    text-align: center;
-}
-
-.btn-logout-inline {
-    background: #ffeeee;
-    color: #e74c3c;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 15px;
-    font-weight: 700;
-    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 12px 0;
     cursor: pointer;
+    position: relative;
+}
+
+.tab-item.active {
+    color: var(--text-main);
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--text-main);
+}
+
+/* Cuadrícula de fotos */
+.profile-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 15px 30px 15px;
+}
+
+.grid-card {
+    width: 100%;
+    height: 180px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.grid-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* Pantalla de Acceso */
 .auth-card {
-    padding: 30px 20px;
+    padding: 40px 20px;
     text-align: center;
 }
 
@@ -235,10 +251,10 @@ body {
     font-weight: 900;
     letter-spacing: 2px;
     margin-bottom: 25px;
-    color: var(--text-dark);
+    color: var(--text-main);
 }
 
-.auth-logo span { color: var(--accent-pink); }
+.auth-logo span { color: #007bff; }
 
 .auth-tabs {
     display: flex;
@@ -252,7 +268,7 @@ body {
     flex: 1;
     background: transparent;
     border: none;
-    color: var(--text-gray);
+    color: var(--text-muted);
     padding: 10px;
     font-weight: 700;
     font-size: 0.9rem;
@@ -262,7 +278,7 @@ body {
 
 .auth-tab.active {
     background: #ffffff;
-    color: var(--text-dark);
+    color: var(--text-main);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
@@ -277,7 +293,7 @@ body {
 .input-group label {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--text-gray);
+    color: var(--text-muted);
     text-transform: uppercase;
 }
 
@@ -286,13 +302,13 @@ body {
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 12px;
-    color: var(--text-dark);
+    color: var(--text-main);
     outline: none;
 }
 
 .btn-auth-submit {
     width: 100%;
-    background: #1a1a1a;
+    background: var(--dark-banner);
     color: #fff;
     border: none;
     padding: 14px;
